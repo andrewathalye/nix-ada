@@ -7,6 +7,9 @@ rec {
    alire = callPackage ./alire {};
    gtkada = callPackage ./gtkada {};
    vss = callPackage ./vss {};
+   # Temporary
+   vss-stable = callPackage ./vss/stable.nix {};
+   aws = callPackage ./aws {};
    ada-libfswatch = callPackage ./ada-libfswatch {};
    templates-parser = callPackage ./templates-parser {};
 
@@ -31,6 +34,7 @@ rec {
    langkit-support = callPackage ./langkit-support {langkit = langkit;};
    libgpr2 = callPackage ./libgpr2 {langkit-support = langkit-support;}; # not quite Group A
    libadalang = callPackage ./libadalang {langkit-support = langkit-support; langkit = langkit; libgpr2 = libgpr2; gnatcoll-gmp = gnatcoll-gmp-updated;};
+   libadalang-python = callPackage ./libadalang/python.nix {libadalang = libadalang;};
 
    libadalang-tools = callPackage ./libadalang-tools {libadalang = libadalang; templates-parser=templates-parser; vss = vss;};
    lal-refactor = callPackage ./lal-refactor {libadalang-tools = libadalang-tools; vss = vss;};
@@ -48,5 +52,5 @@ rec {
    ada-language-server-glib = ada-language-server.override { glibSupport = true; };
 
    # The big one
-   gnatstudio = callPackage ./gnatstudio { gtkada = gtkada; libadalang = libadalang; libadalang-tools = libadalang-tools; vss = vss; ada-language-server = ada-language-server; ada-spawn-glib = ada-spawn-glib; ada-language-server-glib = ada-language-server-glib;};
+   gnatstudio = callPackage ./gnatstudio { gtkada = gtkada; libadalang = libadalang; libadalang-python = libadalang-python; libadalang-tools = libadalang-tools; vss = vss; ada-language-server = ada-language-server; ada-spawn-glib = ada-spawn-glib; ada-language-server-glib = ada-language-server-glib;};
 }

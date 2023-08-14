@@ -1,16 +1,28 @@
 { stdenv
 , fetchzip
+, fetchurl
+
+# Build-time
 , gnat
 , gprbuild
 , glibc
 , pkg-config
-, gtkada
-, xmlada
+, gnatcoll-db2ada
+, wrapGAppsHook
+
+# Python
 , pygobject3
 , pycairo
 , python3
-, gnatcoll-db2ada
+, jedi
+, pyyaml
+, pycodestyle
+, libadalang-python
+
+# Deps
+, xmlada
 , gnatcoll-core
+, gtkada
 , gnatcoll-python3
 , libadalang
 , libadalang-tools
@@ -20,8 +32,13 @@
 , ada-spawn-glib
 , gnatcoll-xref
 , gnatcoll-sqlite
+, hicolor-icon-theme
+, gobject-introspection
 }:
 
+let
+  ourPython = (python3.withPackages (ps: with ps; [ pycairo pygobject3 libadalang-python jedi pyyaml pycodestyle ]));
+in
 stdenv.mkDerivation {
   pname = "gnatstudio";
   version = "23.0.0-20230809-git";
@@ -31,14 +48,26 @@ stdenv.mkDerivation {
     sha256 = "6imb4XvjmCgAV6ZetdCJpZVbw8g5GbsA7lP9VY5sl8k=";
   };
 
-  patches = [ ./dap-vss.patch ];
-  
+  gnatswitches_file = fetchurl {
+    url = "https://raw.githubusercontent.com/gcc-mirror/gcc/298a486c58180adddd99c81217b394f7e4d4bd35/gcc/ada/doc/gnat_ugn/building_executable_programs_with_gnat.rst";
+    sha256 = "LhJJz7wJdK+MOyoEhz1Ha60ETvOv1NBVnX3InzIDysY=";
+  };
+
+  patches = [
+    ./dap-vss.patch
+    ./dap-clients.patch
+    ./codepeer-bridge-commands.patch
+    ./parallel-cli.patch
+    ./collections-abc.patch
+  ];
+
   nativeBuildInputs = [
     gprbuild
     gnat
-    (python3.withPackages (ps: with ps; [ pycairo pygobject3 ]))
     gnatcoll-db2ada
     pkg-config
+    ourPython
+    wrapGAppsHook
   ];
 
   buildInputs = [
@@ -56,15 +85,26 @@ stdenv.mkDerivation {
     gnatcoll-sqlite
     gnatcoll-xref
     ada-spawn-glib
+    hicolor-icon-theme
+    gobject-introspection
+    ourPython
   ];
-
-  dontConfigure = true;
 
   buildPhase = ''
     runHook preBuild
 
+    # Copy necessary GNAT sources (just the one atm)
+    ln -s $gnatswitches_file gnat/building_executable_programs_with_gnat.rst
+
     LAL_TOOLS_BUILD=default BUILD=Production LIBRARY_TYPE=relocatable make
 
     runHook postBuild
+  '';
+
+  # Leave a reference to the Python env so that gnatstudio can find it
+  # TODO hacky?
+  ourPython_out = ourPython.out;
+  postFixup = ''
+    ln -s $ourPython_out $out/share/gnatstudio/python
   '';
 }

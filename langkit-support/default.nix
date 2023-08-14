@@ -19,13 +19,14 @@ stdenv.mkDerivation {
   nativeBuildInputs = [
     gprbuild
     gnat
-    gnatcoll-core
-    gnatcoll-iconv
-    gnatcoll-gmp
+    langkit
   ];
 
   buildInputs = [
     langkit
+    gnatcoll-core
+    gnatcoll-iconv
+    gnatcoll-gmp
   ];
 
   dontConfigure = true;

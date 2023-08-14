@@ -24,12 +24,6 @@ stdenv.mkDerivation {
     pkg-config
   ];
 
-  buildInputs = [
-    templates-parser
-    libadalang
-    vss
-  ];
-
   propagatedBuildInputs = [
     templates-parser
     libadalang

@@ -1,0 +1,13 @@
+diff --git a/code_analysis/src/codepeer-bridge-commands.adb b/code_analysis/src/codepeer-bridge-commands.adb
+index 30af4bf..c968aec 100644
+--- a/code_analysis/src/codepeer-bridge-commands.adb
++++ b/code_analysis/src/codepeer-bridge-commands.adb
+@@ -329,7 +329,7 @@ package body CodePeer.Bridge.Commands is
+ 
+       procedure Do_Annot_File (P : Annot_File_Sets.Cursor) is
+          File : constant String :=
+-           To_String (Annot_File_Sets.Element (Annot_Files, P));
++           To_String (Annot_Files (P));
+ 
+          Node  : constant XML_Utils.Node_Ptr :=
+            new XML_Utils.Node'
