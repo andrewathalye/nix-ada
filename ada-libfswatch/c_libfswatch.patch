@@ -1,0 +1,32 @@
+diff --git a/c_lib/c_libfswatch.gpr b/c_lib/c_libfswatch.gpr.new
+index a12b28f..548d325 100644
+--- a/c_lib/c_libfswatch.gpr
++++ b/c_lib/c_libfswatch.gpr
+@@ -1,16 +1,13 @@
+ library project C_Libfswatch is
+ 
+-   libfswatch_prefix := External("LIBFSWATCH_PREFIX", "../libfswatch");
+-
+    type OS_Type is ("unix", "Windows_NT");
+    OS : OS_Type := External ("OS", "unix");
+ 
+    for Languages use ("C", "C++");
+-   for Source_Dirs use (libfswatch_prefix & "/include/libfswatch/c");
+    for Externally_Built use "true";
+    for Library_Name use "fswatch";
+-   for Library_Dir use libfswatch_prefix & "/lib";
+-   for Library_Kind use "static";
++   for Library_Dir use "@LIBFSWATCH_OUT_REPLACE@" & "/lib";
++   for Library_Kind use "relocatable";
+ 
+    package Linker is
+       case OS is
+@@ -18,7 +15,7 @@ library project C_Libfswatch is
+             for Linker_Options use ("-DHAVE_WINDOWS");
+ 
+          when "unix" =>
+-            for Linker_Options use ("-pthread");
++            for Linker_Options use ("-lpthread");
+       end case;
+    end Linker;
+ 

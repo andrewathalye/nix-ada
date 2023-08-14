@@ -1,0 +1,34 @@
+diff --git a/setup.py b/setup.py
+index c32f46f..eef57ab 100644
+--- a/setup.py
++++ b/setup.py
+@@ -24,8 +24,6 @@ extras_require = {
+ for p in ("darwin", "linux", "linux2", "win32"):
+     platform_string = ":sys_platform=='%s'" % p
+     extras_require[platform_string] = ["psutil"]
+-    if p in ("linux", "linux2"):
+-        extras_require[platform_string].append("ld")
+ 
+ # Get e3 version from the VERSION file.
+ version_file = os.path.join(os.path.dirname(__file__), "VERSION")
+diff --git a/src/e3/os/platform.py b/src/e3/os/platform.py
+index 2d4e174..d4bd8ae 100644
+--- a/src/e3/os/platform.py
++++ b/src/e3/os/platform.py
+@@ -76,16 +76,6 @@ class SystemInfo:
+         # Compute result of uname
+         cls.uname = Uname(*platform_uname())
+ 
+-        # Fetch linux distribution info on linux OS
+-        if cls.uname.system == "Linux":  # linux-only
+-            import ld
+-
+-            cls.ld_info = {
+-                "name": ld.name(),
+-                "major_version": ld.major_version(),
+-                "version": ld.version(),
+-            }
+-
+         # Fetch core numbers. Note that the methods does not work
+         # on AIX platform but we usually override manually that
+         # setting anyway.

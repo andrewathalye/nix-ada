@@ -1,0 +1,13 @@
+diff --git a/dap/dap.gpr b/dap/dap.gpr
+index 95814a1..0c470ed 100644
+--- a/dap/dap.gpr
++++ b/dap/dap.gpr
+@@ -7,7 +7,7 @@ with "../refactoring/ui/refactoring_ui";
+ with "../views/views";
+ with "../browsers/browsers";
+ with "../gvd/gvd";
+-with "../subprojects/VSS/gnat/vss_text";
++with "vss_text";
+ 
+ project DAP is
+ 
