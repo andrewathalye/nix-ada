@@ -21,9 +21,15 @@ stdenv.mkDerivation {
     pkg-config
   ];
 
+  buildPhase = ''
+    runHook preBuild
+    make PREFIX=$out BUILD_MODE=prod
+    runHook postBuild
+  '';
+
   installPhase = ''
     runHook preInstall
-    make install PREFIX=$out
+    make PREFIX=$out BUILD_MODE=prod install
     runHook postInstall
   '';
 }

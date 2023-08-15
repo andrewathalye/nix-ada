@@ -39,7 +39,7 @@ stdenv.mkDerivation {
 
   configurePhase = ''
     runHook preConfigure
-    make prefix=$out DEFAULT_LIBRARY_TYPE=relocatable SOCKET=openssl DEBUG=false setup
+    make prefix=$out ENABLE_SHARED=true SOCKET=openssl DEBUG=false setup
     runHook postConfigure
   '';
 

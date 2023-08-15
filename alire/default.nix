@@ -3,6 +3,7 @@
 , gnat
 , gprbuild
 , glibc
+, unzip
 }:
 
 stdenv.mkDerivation {
@@ -17,6 +18,10 @@ stdenv.mkDerivation {
   nativeBuildInputs = [
     gprbuild
     gnat
+  ];
+
+  propagatedBuildInputs = [
+    unzip
   ];
 
   dontConfigure = true;

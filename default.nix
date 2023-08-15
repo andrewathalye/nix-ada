@@ -3,13 +3,15 @@
 with import <nixpkgs> {inherit system;};
 with python310Packages;
 rec {
-   # Base set
-   alire = callPackage ./alire {};
+   
+   # Static-available set
    gtkada = callPackage ./gtkada {};
-   vss = callPackage ./vss {};
-   # Temporary
    vss-stable = callPackage ./vss/stable.nix {};
    aws = callPackage ./aws {};
+
+   # Base set
+   alire = callPackage ./alire {};
+   vss = callPackage ./vss {};
    ada-libfswatch = callPackage ./ada-libfswatch {};
    templates-parser = callPackage ./templates-parser {};
 
