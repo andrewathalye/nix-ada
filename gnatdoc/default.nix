@@ -10,11 +10,11 @@
 
 stdenv.mkDerivation {
   pname = "libgnatdoc";
-  version = "23.0.0-20230519-git";
+  version = "23.0.0-20230809";
   
   src = fetchzip {
-    url = "https://github.com/AdaCore/gnatdoc/archive/2166610d245c045cc0441322450a4c7b568f7725.zip";
-    sha256 = "1HvbtYwJ6z3UoDq5qPTQ6G2FwNORP40ZYf9rl13H73E=";
+    url = "https://github.com/AdaCore/gnatdoc/archive/8f93d1ab7d7e973d8d8c904805c1bec7aa061cbb.zip";
+    sha256 = "2U8b0akqjSRsRQon00mBREZU7UOmy3FrNWVd+IJ4mUQ=";
   };
   
   nativeBuildInputs = [

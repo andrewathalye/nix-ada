@@ -50,9 +50,9 @@ rec {
    libgnatdoc = callPackage ./gnatdoc {libadalang = libadalang; vss = vss; ada-markdown = ada-markdown;};
 
    # Highly dependent (pick similar branches)
-   ada-language-server = callPackage ./ada-language-server {libadalang = libadalang; libadalang-tools = libadalang-tools; vss = vss; templates-parser = templates-parser; ada-spawn = ada-spawn; ada-spawn-glib = ada-spawn-glib; libgnatdoc = libgnatdoc; libgpr2 = libgpr2; lal-refactor = lal-refactor; ada-libfswatch = ada-libfswatch;};
+   ada-language-server = callPackage ./ada-language-server {libadalang = libadalang; libadalang-tools = libadalang-tools; vss = vss; ada-spawn = ada-spawn; ada-spawn-glib = ada-spawn-glib; libgnatdoc = libgnatdoc; libgpr2 = libgpr2; lal-refactor = lal-refactor; ada-libfswatch = ada-libfswatch; libadalang-python = libadalang-python;};
    ada-language-server-glib = ada-language-server.override { glibSupport = true; };
 
    # The big one
-   gnatstudio = callPackage ./gnatstudio { gtkada = gtkada; libadalang = libadalang; libadalang-python = libadalang-python; libadalang-tools = libadalang-tools; vss = vss; ada-language-server = ada-language-server; ada-spawn-glib = ada-spawn-glib; ada-language-server-glib = ada-language-server-glib;};
+   gnatstudio = callPackage ./gnatstudio { gtkada = gtkada; libadalang = libadalang; libadalang-python = libadalang-python; libadalang-tools = libadalang-tools; vss = vss; ada-spawn-glib = ada-spawn-glib; ada-language-server-glib = ada-language-server-glib; ada-language-server = ada-language-server;};
 }

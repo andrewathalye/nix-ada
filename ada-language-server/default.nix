@@ -4,15 +4,14 @@
 , gnat
 , gprbuild
 , glibc
-, pkg-config
 , libadalang
+, libadalang-python
 , libadalang-tools
 , vss
 , libgnatdoc
 , libgpr2
 , ada-spawn
 , ada-spawn-glib
-, templates-parser
 , lal-refactor
 , ada-libfswatch
 , glibSupport ? false
@@ -23,25 +22,22 @@ let
 in
 stdenv.mkDerivation {
   pname = "ada-language-server" + optionalString glibSupport "-glib";
-  version = "23.0.21";
+  version = "23.0.21-20230814-git";
   
   src = fetchzip {
-    url = "https://github.com/AdaCore/ada_language_server/archive/refs/tags/23.0.21.zip";
-    sha256 = "WIG8B5LMdT2tpmValBUG2Tj9l2UHxyBozAszAzeKG58=";
+    url = "https://github.com/AdaCore/ada_language_server/archive/03266f89ddc540c332e02a56402af080aad0a3ec.zip";
+    sha256 = "rjvhy5u/ygHe0b+TQSRRx8hpV/IpZhZ93JPkMPLI2rQ=";
   };
-  
+
   nativeBuildInputs = [
     gprbuild
     gnat
-    libadalang-tools # Must be executable on host
-    pkg-config
   ];
 
   buildInputs = [
     libadalang
     libadalang-tools
     vss
-    templates-parser
     libgnatdoc
     libgpr2
     lal-refactor
@@ -52,11 +48,21 @@ stdenv.mkDerivation {
 
   dontConfigure = true;
 
+  COMMON_OPTS="-XLAL_TOOLS_BUILD=default -XLIBRARY_TYPE=relocatable -XBUILD_MODE=prod";
+
   buildPhase = ''
     runHook preBuild
-    BUILD_MODE=prod LAL_TOOLS_BUILD=default ''
-    + optionalString (!glibSupport) "make prefix=$out"
-    + optionalString glibSupport "gprbuild -j0 -Pgnat/lsp_client_glib.gpr" + ''
+
+    export BUILD_OPTS="$COMMON_OPTS -j0"
+    ''
+    + optionalString (!glibSupport)
+    '' # Build custom System.Memory version
+      gprbuild $BUILD_OPTS -d -ws -c -u -P gnat/lsp_server.gpr s-memory.adb
+      gprbuild $BUILD_OPTS -Pgnat/lsp.gpr
+      gprbuild $BUILD_OPTS -Pgnat/lsp_server.gpr
+    ''
+    + optionalString glibSupport "gprbuild $BUILD_OPTS -Pgnat/lsp_client_glib.gpr"
+    + ''
 
     runHook postBuild
   '';
@@ -64,9 +70,11 @@ stdenv.mkDerivation {
   installPhase = ''
     runHook preInstall
 
-    LAL_TOOLS_BUILD=default prefix=$out BUILD_MODE=prod ''
-    + optionalString (!glibSupport) "make install"
-    + optionalString glibSupport "gprinstall --prefix=$out -p -Pgnat/lsp_client_glib.gpr" + ''
+    export INSTALL_OPTS="$COMMON_OPTS -p --prefix=$out --no-manifest -m"
+    ''
+    + optionalString (!glibSupport) "gprinstall $INSTALL_OPTS --mode=usage -Pgnat/lsp_server.gpr "
+    + optionalString glibSupport "gprinstall $INSTALL_OPTS -r -Pgnat/lsp_client_glib.gpr"
+    + ''
 
     runHook postInstall
   '';

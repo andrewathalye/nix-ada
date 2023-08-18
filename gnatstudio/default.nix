@@ -34,6 +34,7 @@
 , gnatcoll-sqlite
 , hicolor-icon-theme
 , gobject-introspection
+, gdb
 }:
 
 let
@@ -78,9 +79,7 @@ stdenv.mkDerivation {
     gnatcoll-core
     gnatcoll-python3
     libadalang
-    libadalang-tools
     vss
-    ada-language-server
     ada-language-server-glib
     gnatcoll-sqlite
     gnatcoll-xref
@@ -88,6 +87,14 @@ stdenv.mkDerivation {
     hicolor-icon-theme
     gobject-introspection
     ourPython
+  ];
+
+  propagatedBuildInputs = [
+    ada-language-server
+    libadalang-tools
+    gdb
+    gnat
+    gprbuild
   ];
 
   buildPhase = ''

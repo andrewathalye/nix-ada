@@ -26,15 +26,11 @@ stdenv.mkDerivation {
     gprbuild
   ];
 
-  buildInputs = [
-    zlib
-  ];
-
   propagatedBuildInputs = [
     xmlada
     gnatcoll-core
-    xmlada
     openssl
+    zlib
   ];
 
   configurePhase = ''
@@ -47,5 +43,14 @@ stdenv.mkDerivation {
     runHook preBuild
     make build
     runHook postBuild
+  '';
+
+  # Remove invalid syntax from GPR file.
+  # This confuses ada_language_server
+  installPhase = ''
+    runHook preInstall
+    make install
+    sed -i 's/for implementation_exceptions.*;//g' $out/share/gpr/aws.gpr
+    runHook postInstall
   '';
 }

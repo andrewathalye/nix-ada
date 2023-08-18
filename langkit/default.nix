@@ -33,7 +33,7 @@
 
 buildPythonPackage rec {
   pname = "langkit";
-  version = "23.0.0-20230120-git";
+  version = "23.0.0-20230802-git";
   
   src = fetchzip {
     url = "https://github.com/AdaCore/langkit/archive/32b9cd735c7236abfae8c474af88f89ea6664de0.zip";
