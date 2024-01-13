@@ -10,7 +10,6 @@ rec {
    aws = callPackage ./aws {};
 
    # Base set
-   alire = callPackage ./alire {};
    vss = callPackage ./vss {};
    ada-libfswatch = callPackage ./ada-libfswatch {};
    templates-parser = callPackage ./templates-parser {};
