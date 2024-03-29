@@ -42,7 +42,7 @@ buildPythonPackage rec {
 
   pythonDeps = [ mako pygments autopep8 coverage docutils flake8 funcy mccabe mypy pexpect ptyprocess pycodestyle pyflakes pytest railroad-diagrams sphinx-rtd-theme types-docutils yapf pyyaml ];
 
-  ourDeps = [ e3-core e3-testsuite gnat-gdb-scripts types-gdb ];
+  ourDeps = [ e3-core e3-testsuite gnat-gdb-scripts ];
 
   propagatedBuildInputs = [
     adasat
