@@ -6,13 +6,13 @@
 , pkg-config
 }:
 
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   pname = "vss";
-  version = "23.0.0-20230725-git";
+  version = "24.2";
   
   src = fetchzip {
-    url = "https://github.com/AdaCore/VSS/archive/719386b1d0a013b3ef9b16d7ce271310a7f12582.zip";
-    sha256 = "EOkfABXaXv7Ml9a35nLnbRg8ZLPCHp/oQNP54pzynnc=";
+    url = "https://github.com/AdaCore/VSS/archive/refs/heads/${version}.zip";
+    sha256 = "sha256-Tgu+0vlfgM6uZo5SwQk6nV67YCGI6VOOj32pHlOtjU0=";
   };
   
   nativeBuildInputs = [

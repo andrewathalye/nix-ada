@@ -9,11 +9,11 @@
 
 stdenv.mkDerivation {
   pname = "lal-refactor";
-  version = "20230807-git";
+  version = "24.2";
   
   src = fetchzip {
-    url = "https://github.com/AdaCore/lal-refactor/archive/dcc1d260a3c3186394fbc794debdc4333b1275a3.zip";
-    sha256 = "QiWHx5l7j5EsmUtZaZg1Ufh8LZNocM/cAC8LcUKlldU=";
+    url = "https://github.com/AdaCore/lal-refactor/archive/refs/heads/24.2.zip";
+    sha256 = "sha256-nrGkALirATEjCANai1xoxpovryQ/wtxv2dRmATnd2us=";
   };
 
   nativeBuildInputs = [

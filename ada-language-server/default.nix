@@ -20,13 +20,13 @@
 let
    inherit (lib) optionalString optional;
 in
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   pname = "ada-language-server" + optionalString glibSupport "-glib";
-  version = "23.0.21-20230814-git";
+  version = "24.2";
   
   src = fetchzip {
-    url = "https://github.com/AdaCore/ada_language_server/archive/03266f89ddc540c332e02a56402af080aad0a3ec.zip";
-    sha256 = "rjvhy5u/ygHe0b+TQSRRx8hpV/IpZhZ93JPkMPLI2rQ=";
+    url = "https://github.com/AdaCore/ada_language_server/archive/refs/heads/${version}.zip";
+    sha256 = "sha256-1znWD2+UeiZYJZyOlF8Ywbn6hD9Hnlwok/ID8FqZV90=";
   };
 
   nativeBuildInputs = [

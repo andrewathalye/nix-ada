@@ -13,6 +13,7 @@
 # Python
 , pygobject3
 , pycairo
+, cairo
 , python3
 , jedi
 , pyyaml
@@ -23,7 +24,7 @@
 , xmlada
 , gnatcoll-core
 , gtkada
-, gnatcoll-python3
+, gnatcoll-python3-patched
 , libadalang
 , libadalang-tools
 , vss
@@ -40,13 +41,13 @@
 let
   ourPython = (python3.withPackages (ps: with ps; [ pycairo pygobject3 libadalang-python jedi pyyaml pycodestyle ]));
 in
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   pname = "gnatstudio";
-  version = "23.0.0-20230809-git";
+  version = "24.2";
   
   src = fetchzip {
-    url = "https://github.com/AdaCore/gnatstudio/archive/8b1a2b2c5bb796830e27ba5b459c3e9ae93f428d.zip";
-    sha256 = "6imb4XvjmCgAV6ZetdCJpZVbw8g5GbsA7lP9VY5sl8k=";
+    url = "https://github.com/AdaCore/gnatstudio/archive/refs/heads/${version}.zip";
+    sha256 = "sha256-/EfHp8MYkyfNcILWGDibVAXVkkgSaZn3efl8DaJuxAM=";
   };
 
   gnatswitches_file = fetchurl {
@@ -64,7 +65,6 @@ stdenv.mkDerivation {
 
   nativeBuildInputs = [
     gprbuild
-    gnat
     gnatcoll-db2ada
     pkg-config
     ourPython
@@ -77,7 +77,7 @@ stdenv.mkDerivation {
     pycairo
     gtkada
     gnatcoll-core
-    gnatcoll-python3
+    gnatcoll-python3-patched
     libadalang
     vss
     ada-language-server-glib
@@ -89,7 +89,7 @@ stdenv.mkDerivation {
     ourPython
   ];
 
-  propagatedBuildInputs = [
+  propagatedNativeBuildInputs = [
     ada-language-server
     libadalang-tools
     gdb

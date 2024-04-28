@@ -9,13 +9,13 @@
 , vss
 }:
 
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   pname = "libadalang-tools";
-  version = "23.0.0-20230802-git";
+  version = "24.2";
   
   src = fetchzip {
-    url = "https://github.com/AdaCore/libadalang-tools/archive/c8692f0e126c1be284500aeab72ad24191a2f1ed.zip";
-    sha256 = "MYy5SqzV2HaTdDGpU4SutUhLQGPn+3s6eu1bREiztow=";
+    url = "https://github.com/AdaCore/libadalang-tools/archive/refs/heads/${version}.zip";
+    sha256 = "sha256-nhJ1cCQWQh8kn219vuMLxb5CZpfLgKmSA2tpB7zPnaQ=";
   };
   
   nativeBuildInputs = [

@@ -6,13 +6,13 @@
 , vss
 }:
 
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   pname = "ada-markdown";
-  version = "23.0.0-20230514-git";
+  version = "24.2";
   
   src = fetchzip {
-    url = "https://github.com/AdaCore/markdown/archive/522ac0682d656f7a8c4a1d0116a8ddd732d2dad9.zip";
-    sha256 = "d8dYok51bxITYdEQog1n2vfnybEFmzxcnf85nNVHyZA=";
+    url = "https://github.com/AdaCore/markdown/archive/refs/heads/${version}.zip";
+    sha256 = "sha256-d8dYok51bxITYdEQog1n2vfnybEFmzxcnf85nNVHyZA=";
   };
   
   nativeBuildInputs = [

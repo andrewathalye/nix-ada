@@ -7,4 +7,5 @@ No guarantees yet :(
 Of note:
 libadalang
 libadalang-tools
+ada-language-server
 gnatstudio
