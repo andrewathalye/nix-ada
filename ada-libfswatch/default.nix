@@ -9,7 +9,7 @@
 
 stdenv.mkDerivation {
   pname = "ada-libfswatch";
-  version = "20220203-git";
+  version = "24.1-20220203";
   
   src = fetchzip {
     url = "https://github.com/AdaCore/ada_libfswatch/archive/00fb794cd61f9f86e00151e8380886d361dba102.zip";
@@ -30,6 +30,7 @@ stdenv.mkDerivation {
   
   configurePhase = ''
     runHook preConfigure
+
     # Replace library path in GPR
     sed -i 's;@LIBFSWATCH_OUT_REPLACE@;'' + fswatch.out + '';' c_lib/c_libfswatch.gpr
 

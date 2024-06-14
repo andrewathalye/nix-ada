@@ -1,5 +1,5 @@
 { stdenv
-, fetchzip
+, fetchgit
 
 # Build-time
 , gnat
@@ -14,11 +14,13 @@
 
 stdenv.mkDerivation {
   pname = "aws";
-  version = "23.0.0";
+  version = "24.2-20240607";
 
-  src = fetchzip {
-    url = "https://github.com/AdaCore/aws/releases/download/v23.0.0/aws-23.0.0.zip";
-    sha256 = "6vVHBIfkK+iHZX68wrz2dKy9OwBjkgZcWkoekz0sXdo=";
+  src = fetchGit {
+    url = "https://github.com/AdaCore/aws.git";
+    submodules = true;
+    ref = "master";
+    rev = "8e5dfe946b1334c93f0efb13bb4dff171a480cd3";
   };
 
   nativeBuildInputs = [
@@ -35,7 +37,7 @@ stdenv.mkDerivation {
 
   configurePhase = ''
     runHook preConfigure
-    make prefix=$out ENABLE_SHARED=true SOCKET=openssl DEBUG=false setup
+    make prefix=$out ENABLE_SHARED=true SOCKET=openssl ZLIB=true DEBUG=false setup
     runHook postConfigure
   '';
 
