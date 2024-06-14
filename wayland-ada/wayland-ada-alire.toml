@@ -1,0 +1,18 @@
+name = "wayland_client_ada"
+description = "Ada 2012 bindings for libwayland-client and the Wayland protocol"
+version = "1.0.0"
+
+[build-switches]
+validation.compile_checks = "warnings"
+"*".style_checks = ["-gnatygAOM99-Is"]
+
+[available.'case(os)']
+linux = true
+'...' = false
+
+[[actions]]
+type = "pre-build"
+command = ["wayland_ada_scanner", "protocol/wayland.xml", "src/protocols"]
+
+[[depends-on]]
+libwayland = "^1.18"

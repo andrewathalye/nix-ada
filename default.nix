@@ -21,16 +21,20 @@ rec {
    ada-libfswatch = callPackage ./ada-libfswatch {};
    templates-parser = callPackage ./templates-parser {};
 
+   # Nixified version of Alire Index
+   alire-index = callPackage ./alire-index {};
+   wayland-ada-scanner = callPackage ./wayland-ada/scanner.nix {alire-index = alire-index;};
+   wayland-ada = callPackage ./wayland-ada {wayland-ada-scanner = wayland-ada-scanner; alire-index = alire-index;};
+
    # Updated GNATCOLL for Python <=3.12 support
-   gnatcoll-python3-p1 = gnatcoll-python3.overrideAttrs (final:
+   gnatcoll-python3-patched = gnatcoll-python3.overrideAttrs (final:
     {
       version = "24.2";
       src = fetchzip {
          url = "https://github.com/AdaCore/gnatcoll-bindings/archive/refs/heads/24.2.zip";
          hash = "sha256-LoeZspeO5siSuIcA6iuRABlpfSlpJJuxnhSvlbIYfzE=";
       };
-    });
-   gnatcoll-python3-patched = gnatcoll-python3-p1.override {python3 = python3;};
+    }).override {python3 = python3;};
    # Force this gnatcoll to use the current default Python version (instead of hardcoded 3.9)
 
    types-gdb = callPackage ./types-gdb {};  

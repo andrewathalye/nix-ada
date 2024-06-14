@@ -3,5 +3,5 @@
 }:
 
 pkgs.mkShell {
-   buildInputs = [nix.gnatstudio nix.aws];
+   buildInputs = [nix.gnatstudio];
 }
