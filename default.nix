@@ -3,11 +3,12 @@
 with pkgs;
 with python3Packages;
 rec {
-   inherit gnat13;
    inherit gnat;
    inherit gprbuild;
    inherit alire;
 
+   # Any other Ada packages can be found in pkgs.X
+   # The above are inherited for convenience
    inherit pkgs;
    
    # Tier A
