@@ -1,8 +1,13 @@
-{ pkgs ? import <nixpkgs> { overlays = (import ./overlays.nix); } }:
+{ pkgs ? import <nixpkgs> { overlays = (import ./overlays.nix {}); } }:
 
 with pkgs;
 with python3Packages;
 rec {
+   inherit gnat13;
+   inherit gnat;
+   inherit gprbuild;
+   inherit alire;
+
    inherit pkgs;
    
    # Tier A

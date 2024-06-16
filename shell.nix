@@ -1,7 +1,7 @@
-{ nix-ada ? import ./default.nix {}
+{ pkgs ? import <nixpkgs> {}
+, nix-ada ? import ./default.nix {}
 }:
 
-with nix-ada;
 pkgs.mkShell {
-   buildInputs = [gnatstudio];
+   buildInputs = [ nix-ada.gnatstudio ];
 }

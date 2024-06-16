@@ -9,6 +9,6 @@
       nix-ada = import ./default.nix { pkgs = pkgs; };
    in {
       packages.${system} = nix-ada;
-      devShells.${system}.default = import ./shell.nix { nix-ada = nix-ada; };
+      devShells.${system}.default = import ./shell.nix { pkgs = pkgs; nix-ada = nix-ada; };
    };
 }
