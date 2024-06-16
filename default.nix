@@ -1,18 +1,9 @@
-{ system ? builtins.currentSystem }:
+{ pkgs ? import <nixpkgs> { overlays = (import ./overlays.nix); } }:
 
-# We require GNAT 13 to match the current system compiler GCC 13
-let
-   adapkgs-internal = import <nixpkgs> {inherit system; overlays =
-      [
-         (final: prev: { gnat = prev.gnat13; })
-         (final: prev: { gnat12 = prev.gnat13; })
-      ];};
-in
-with adapkgs-internal;
+with pkgs;
 with python3Packages;
 rec {
-
-   adapkgs = adapkgs-internal;
+   inherit pkgs;
    
    # Tier A
    gtkada = callPackage ./gtkada {};
