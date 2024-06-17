@@ -3,5 +3,6 @@
 }:
 
 pkgs.mkShell {
-   buildInputs = [ nix-ada.gnatstudio ];
+   nativeBuildInputs = [ nix-ada.gnatstudio ];
+   buildInputs = [ nix-ada.florist ];
 }
