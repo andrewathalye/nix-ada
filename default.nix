@@ -19,6 +19,8 @@ rec {
    ada-libfswatch = callPackage ./ada-libfswatch {};
    templates-parser = callPackage ./templates-parser {};
    florist = callPackage ./florist {};
+   polyorb = callPackage ./polyorb {};
+   dbus-ada = callPackage ./dbus-ada {};
 
    # Nixified version of Alire Index
    alire-index = callPackage ./alire-index {};
@@ -66,5 +68,5 @@ rec {
    ada-language-server-glib = ada-language-server.override { glibSupport = true; };
 
    # Tier E
-   gnatstudio = callPackage ./gnatstudio { inherit gtkadata libadalang libadalang-python libadalang-tools vss ada-spawn-glib ada-language-server-glib ada-language-server gnatcoll-python3-patched; };
+   gnatstudio = callPackage ./gnatstudio { inherit gtkada libadalang libadalang-python libadalang-tools vss ada-spawn-glib ada-language-server-glib ada-language-server gnatcoll-python3-patched; };
 }

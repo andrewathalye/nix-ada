@@ -1,5 +1,5 @@
 { stdenv
-, fetchzip
+, fetchgit
 
 # Build-time
 , gnat
@@ -16,7 +16,7 @@
 }:
 
 let
-   shared = import ./shared.nix {fetchzip = fetchzip;};
+   shared = import ./shared.nix { inherit fetchgit; };
 in
 stdenv.mkDerivation rec {
    pname = "wayland-ada";
@@ -25,7 +25,10 @@ stdenv.mkDerivation rec {
    src = shared.src;
 
    # Custom alire.toml to avoid dependency issues
-   wayland-ada-alire = ./wayland-ada-alire.toml;
+   alire_toml = ./wayland_client_ada/alire.toml;
+
+   # Enable shared library over static
+   patches = [ ./wayland_client_ada/wayland_client_ada.gpr.patch ];
 
    nativeBuildInputs = [
       gnat
@@ -41,7 +44,7 @@ stdenv.mkDerivation rec {
       runHook preBuild
       cd wayland_client_ada
       rm alire.toml
-      ln -s ${wayland-ada-alire} alire.toml
+      ln -s ${alire_toml} alire.toml
 
       # Workaround for Alire bug
       HOME=${alire-index.out} alr build

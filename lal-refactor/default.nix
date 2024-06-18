@@ -1,5 +1,5 @@
 { stdenv
-, fetchzip
+, fetchgit
 , gnat
 , gprbuild
 , glibc
@@ -7,13 +7,14 @@
 , vss
 }:
 
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   pname = "lal-refactor";
   version = "24.2";
   
-  src = fetchzip {
-    url = "https://github.com/AdaCore/lal-refactor/archive/refs/heads/24.2.zip";
-    sha256 = "sha256-nrGkALirATEjCANai1xoxpovryQ/wtxv2dRmATnd2us=";
+  src = fetchGit {
+    url = "https://github.com/AdaCore/lal-refactor.git";
+    ref = version;
+    rev = "6499760082efe02ff4bc3b7d6dc47818a1e82bf4";
   };
 
   nativeBuildInputs = [

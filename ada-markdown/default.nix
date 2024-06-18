@@ -1,5 +1,5 @@
 { stdenv
-, fetchzip
+, fetchgit
 , gnat
 , gprbuild
 , glibc
@@ -10,9 +10,10 @@ stdenv.mkDerivation rec {
   pname = "ada-markdown";
   version = "24.2";
   
-  src = fetchzip {
-    url = "https://github.com/AdaCore/markdown/archive/refs/heads/${version}.zip";
-    sha256 = "sha256-d8dYok51bxITYdEQog1n2vfnybEFmzxcnf85nNVHyZA=";
+  src = fetchGit {
+    url = "https://github.com/AdaCore/markdown.git";
+    ref = version;
+    rev = "522ac0682d656f7a8c4a1d0116a8ddd732d2dad9";
   };
   
   nativeBuildInputs = [

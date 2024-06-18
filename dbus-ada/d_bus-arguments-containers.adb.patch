@@ -1,0 +1,13 @@
+diff --git a/src/d_bus-arguments-containers.adb b/src/d_bus-arguments-containers.adb
+index 0f90a6d..0cf6656 100644
+--- a/src/d_bus-arguments-containers.adb
++++ b/src/d_bus-arguments-containers.adb
+@@ -484,7 +484,7 @@ package body D_Bus.Arguments.Containers is
+ 
+    function To_String (Arg : Variant_Type) return String
+    is
+-      Contained : Argument_Type'Class := Arg.Get_Argument;
++      Contained : constant Argument_Type'Class := Arg.Get_Argument;
+    begin
+       return Contained.Get_Tag & ", " & Contained.To_String;
+    end To_String;

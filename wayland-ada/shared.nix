@@ -1,9 +1,10 @@
-{fetchzip}:
+{fetchgit}:
 rec {
-   src = fetchzip {
-      url = "https://github.com/onox/wayland-ada/archive/refs/tags/v1.0.0.zip";
-      sha256 = "QY7OQQLyi3f+dtM4thnWa5i15QtFnaqyK/7S6S127Bg=";
-   };
-
    version = "1.0.0";
+
+   src = fetchGit {
+      url = "https://github.com/onox/wayland-ada.git";
+      ref = "master";
+      rev = "f8a9fe05aa29e5e17d23951bc0d21ce4b84148a4";
+   };
 }

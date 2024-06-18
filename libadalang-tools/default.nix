@@ -1,5 +1,5 @@
 { stdenv
-, fetchzip
+, fetchgit
 , gnat
 , gprbuild
 , glibc
@@ -13,9 +13,10 @@ stdenv.mkDerivation rec {
   pname = "libadalang-tools";
   version = "24.2";
   
-  src = fetchzip {
-    url = "https://github.com/AdaCore/libadalang-tools/archive/refs/heads/${version}.zip";
-    sha256 = "sha256-nhJ1cCQWQh8kn219vuMLxb5CZpfLgKmSA2tpB7zPnaQ=";
+  src = fetchGit {
+    url = "https://github.com/AdaCore/libadalang-tools.git";
+    ref = version;
+    rev = "0b842b579a68a2302a2fdc6b59688e2ce7b0d03b";
   };
   
   nativeBuildInputs = [

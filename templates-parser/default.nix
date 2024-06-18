@@ -1,5 +1,5 @@
 { stdenv
-, fetchzip
+, fetchgit
 , gnat
 , gprbuild
 , glibc
@@ -7,13 +7,14 @@
 , which
 }:
 
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   pname = "templates-parser";
-  version = "23.0.0";
+  version = "24.2";
   
-  src = fetchzip {
-    url = "https://github.com/AdaCore/templates-parser/archive/refs/tags/v23.0.0.zip";
-    sha256 = "vj1I8arBP/kjWVWC4hlyfo1eyBOF78F+gCCzb7lri+w=";
+  src = fetchGit {
+    url = "https://github.com/AdaCore/templates-parser.git";
+    ref = version;
+    rev = "53cff2e1a864f9da270bc610765283dd800f671c";
   };
   
   nativeBuildInputs = [

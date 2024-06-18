@@ -13,6 +13,7 @@ stdenv.mkDerivation rec {
   src = fetchGit {
     url = "https://github.com/AdaCore/florist.git";
     ref = version;
+    rev = "1991404ded15a99a79745569017bb42594be9eca";
   };
 
   nativeBuildInputs = [

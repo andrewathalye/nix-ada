@@ -1,5 +1,5 @@
 { stdenv
-, fetchzip
+, fetchgit
 
 # Build-time
 , gnat
@@ -10,7 +10,7 @@
 }:
 
 let
-   shared = import ./shared.nix {fetchzip = fetchzip;};
+   shared = import ./shared.nix { inherit fetchgit; };
 in
 stdenv.mkDerivation {
    pname = "wayland-ada-scanner";

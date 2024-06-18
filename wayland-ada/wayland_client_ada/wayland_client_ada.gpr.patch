@@ -1,0 +1,12 @@
+diff --git a/wayland_client_ada/wayland_client_ada.gpr b/wayland_client_ada/wayland_client_ada.gpr
+index c471745..503c380 100644
+--- a/wayland_client_ada/wayland_client_ada.gpr
++++ b/wayland_client_ada/wayland_client_ada.gpr
+@@ -4,6 +4,7 @@ project Wayland_Client_Ada is
+ 
+    for Library_Name use "wayland_client_ada";
+    for Library_Version use Project'Library_Name & ".so." & Wayland_Client_Ada_Config.Crate_Version;
++   for Library_Kind use "dynamic";
+ 
+    for Languages use ("ada", "c");
+ 

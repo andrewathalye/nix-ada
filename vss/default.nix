@@ -1,5 +1,5 @@
 { stdenv
-, fetchzip
+, fetchgit
 , gnat
 , gprbuild
 , glibc
@@ -10,9 +10,10 @@ stdenv.mkDerivation rec {
   pname = "vss";
   version = "24.2";
   
-  src = fetchzip {
-    url = "https://github.com/AdaCore/VSS/archive/refs/heads/${version}.zip";
-    sha256 = "sha256-Tgu+0vlfgM6uZo5SwQk6nV67YCGI6VOOj32pHlOtjU0=";
+  src = fetchGit {
+    url = "https://github.com/AdaCore/VSS.git";
+    ref = version;
+    rev = "1c49a43be7e29b609b024aec438e65e0c46aff0d";
   };
   
   nativeBuildInputs = [

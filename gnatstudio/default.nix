@@ -1,5 +1,5 @@
 { stdenv
-, fetchzip
+, fetchgit
 , fetchurl
 
 # Build-time
@@ -45,9 +45,10 @@ stdenv.mkDerivation rec {
   pname = "gnatstudio";
   version = "24.2";
   
-  src = fetchzip {
-    url = "https://github.com/AdaCore/gnatstudio/archive/refs/heads/${version}.zip";
-    sha256 = "sha256-/EfHp8MYkyfNcILWGDibVAXVkkgSaZn3efl8DaJuxAM=";
+  src = fetchGit {
+    url = "https://github.com/AdaCore/gnatstudio.git";
+    ref = version;
+    rev = "ac65e0afa5d9d959fe3f9f958820e9c6614b2e8e";
   };
 
   gnatswitches_file = fetchurl {

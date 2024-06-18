@@ -1,6 +1,6 @@
 { lib
 , stdenv
-, fetchzip
+, fetchgit
 , gnat
 , gprbuild
 , glibc
@@ -24,9 +24,10 @@ stdenv.mkDerivation rec {
   pname = "ada-language-server" + optionalString glibSupport "-glib";
   version = "24.2";
   
-  src = fetchzip {
-    url = "https://github.com/AdaCore/ada_language_server/archive/refs/heads/${version}.zip";
-    sha256 = "sha256-1znWD2+UeiZYJZyOlF8Ywbn6hD9Hnlwok/ID8FqZV90=";
+  src = fetchGit {
+    url = "https://github.com/AdaCore/ada_language_server.git";
+    ref = version;
+    rev = "096fbb64d676edd789fc2d483503fbf6f41de8a1";
   };
 
   nativeBuildInputs = [

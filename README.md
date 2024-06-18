@@ -1,14 +1,11 @@
 Nix-Ada
 =======
 
-A set of Nix packages for Ada libraries and applications.
+A set of Nix packages for Ada libraries and applications. The set changes over time, so see `./default.nix` for a full, canonical list.
 
-Of note:
-libadalang
-libadalang-tools
-ada-language-server
-wayland-ada
-gnatstudio
+Any package in that list is certified to build and work on x86\_64-linux with the provided Flake.
+
+Please create a Pull Request if you’d like to add a package or update one, or an Issue if something is wrong with an existing package.
 
 Flake Info
 ----------
