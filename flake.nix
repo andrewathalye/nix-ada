@@ -6,10 +6,10 @@
    let
       system = "x86_64-linux";
 
-      pkgs = import nixpkgs { system = system; overlays = (import ./overlays.nix {}); };
-      nix-ada = import ./default.nix { pkgs = pkgs; };
+      pkgs = import nixpkgs { inherit system; overlays = (import ./overlays.nix {}); };
+      nix-ada = import ./default.nix { inherit pkgs; };
    in {
       packages.${system} = nix-ada;
-      devShells.${system}.default = import ./shell.nix { pkgs = pkgs; nix-ada = nix-ada; };
+      devShells.${system}.default = import ./shell.nix { inherit nix-ada; };
    };
 }

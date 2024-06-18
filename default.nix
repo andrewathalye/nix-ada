@@ -24,8 +24,6 @@ rec {
 
    # Nixified version of Alire Index
    alire-index = callPackage ./alire-index {};
-   wayland-ada-scanner = callPackage ./wayland-ada/scanner.nix { inherit alire-index; };
-   wayland-ada = callPackage ./wayland-ada { inherit wayland-ada-scanner alire-index; };
 
    # Updated GNATCOLL for Python <=3.12 support
    gnatcoll-python3-patched-p1 = gnatcoll-python3.overrideAttrs (final:
@@ -57,11 +55,15 @@ rec {
    ada-spawn-glib = ada-spawn.override { glibSupport = true; };
 
    ada-markdown = callPackage ./ada-markdown { inherit vss; };
-   libgnatdoc = callPackage ./gnatdoc { inherit libadalang vss ada-markdown; };
+   libgnatdoc = callPackage ./gnatdoc/libgnatdoc.nix { inherit libadalang vss ada-markdown; };
+
+   wayland-ada-scanner = callPackage ./wayland-ada/scanner.nix { inherit alire-index; };
+   wayland-ada = callPackage ./wayland-ada { inherit wayland-ada-scanner alire-index; };
 
    # Tier C
    libadalang-tools = callPackage ./libadalang-tools { inherit libadalang templates-parser vss; };
    lal-refactor = callPackage ./lal-refactor { inherit libadalang-tools vss; };
+   gnatdoc = callPackage ./gnatdoc { inherit libgnatdoc vss ada-markdown; };
    
    # Tier D
    ada-language-server = callPackage ./ada-language-server { inherit libadalang libadalang-tools vss ada-spawn ada-spawn-glib libgnatdoc libgpr2 lal-refactor ada-libfswatch libadalang-python; };

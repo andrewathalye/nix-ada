@@ -4,15 +4,15 @@
 , gprbuild
 , glibc
 , ada-markdown
+, libadalang
 , vss
-, libgnatdoc
 }:
 
 let
    shared = import ./shared.nix { inherit fetchgit; };
 in
 stdenv.mkDerivation rec {
-  pname = "gnatdoc";
+  pname = "libgnatdoc";
   version = shared.version;
   
   src = shared.src;
@@ -22,23 +22,18 @@ stdenv.mkDerivation rec {
     gnat
   ];
 
-  buildInputs = [
+  propagatedBuildInputs = [
     ada-markdown
-    libgnatdoc
+    libadalang
     vss
   ];
-
-  # Force the use of the systemwide libgnatdoc
-  patchPhase = ''
-    rm gnat/libgnatdoc.gpr
-  '';
 
   dontConfigure = true;
   
   buildPhase = ''
     runHook preBuild
     
-    gprbuild -j0 -Pgnat/gnatdoc.gpr -XLIBRARY_TYPE=relocatable
+    gprbuild -j0 -Pgnat/libgnatdoc.gpr -XLIBRARY_TYPE=relocatable
     
     runHook postBuild
   '';
@@ -46,7 +41,7 @@ stdenv.mkDerivation rec {
   installPhase = ''
     runHook preInstall
 
-    gprinstall --prefix=$out -p -Pgnat/gnatdoc.gpr -XLIBRARY_TYPE=relocatable
+    gprinstall --prefix=$out -p -Pgnat/libgnatdoc.gpr -XLIBRARY_TYPE=relocatable
 
     runHook postInstall
   '';
