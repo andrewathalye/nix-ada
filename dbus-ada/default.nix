@@ -27,7 +27,7 @@ stdenv.mkDerivation rec {
     gprbuild
   ];
 
-  buildInputs = [
+  propagatedBuildInputs = [
     dbus
     dbus-glib
   ];
