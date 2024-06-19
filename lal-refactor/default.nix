@@ -9,12 +9,12 @@
 
 stdenv.mkDerivation rec {
   pname = "lal-refactor";
-  version = "24.2";
+  version = "24.2-20240613-git";
   
   src = fetchGit {
     url = "https://github.com/AdaCore/lal-refactor.git";
-    ref = version;
-    rev = "6499760082efe02ff4bc3b7d6dc47818a1e82bf4";
+    ref = "edge";
+    rev = "9a09c7f910fb5a229741cb41099e97625ea6db1b";
   };
 
   nativeBuildInputs = [

@@ -1,5 +1,5 @@
 { stdenv
-, fetchzip
+, fetchgit
 , gnat
 , gprbuild
 , glibc
@@ -7,11 +7,12 @@
 
 stdenv.mkDerivation {
   pname = "adasat";
-  version = "23.0.0-20230120-git";
+  version = "24.2-20240103-git";
   
-  src = fetchzip {
-    url = "https://github.com/AdaCore/AdaSAT/archive/f948e2271aec51f9313fa41ff3c00230a483f9e8.zip";
-    sha256 = "3xSDxT1oSr7lTJm+ncI9cowtAC8hPxWY1LPZzk8V/nk=";
+  src = fetchGit {
+    url = "https://github.com/AdaCore/AdaSAT.git";
+    ref = "master";
+    rev = "01e9a19b61ba785878862b8bce5ae8145018ef01";
   };
   
   nativeBuildInputs = [

@@ -24,7 +24,7 @@
 , xmlada
 , gnatcoll-core
 , gtkada
-, gnatcoll-python3-patched
+, gnatcoll-python3
 , libadalang
 , libadalang-tools
 , vss
@@ -43,12 +43,12 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "gnatstudio";
-  version = "24.2";
+  version = "24.2-20240618-git";
   
   src = fetchGit {
     url = "https://github.com/AdaCore/gnatstudio.git";
-    ref = version;
-    rev = "ac65e0afa5d9d959fe3f9f958820e9c6614b2e8e";
+    ref = "master";
+    rev = "0f561c6c66b00a723f331ca84db18a5ef56f33e8";
   };
 
   gnatswitches_file = fetchurl {
@@ -57,11 +57,11 @@ stdenv.mkDerivation rec {
   };
 
   patches = [
-    ./dap-vss.patch
     ./dap-clients.patch
     ./codepeer-bridge-commands.patch
     ./parallel-cli.patch
     ./collections-abc.patch
+    ./lal-highlighters.adb.patch
   ];
 
   nativeBuildInputs = [
@@ -78,7 +78,7 @@ stdenv.mkDerivation rec {
     pycairo
     gtkada
     gnatcoll-core
-    gnatcoll-python3-patched
+    gnatcoll-python3
     libadalang
     vss
     ada-language-server-glib

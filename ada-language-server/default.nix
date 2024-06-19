@@ -22,13 +22,17 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "ada-language-server" + optionalString glibSupport "-glib";
-  version = "24.2";
+  version = "24.2-20240618-git";
   
   src = fetchGit {
     url = "https://github.com/AdaCore/ada_language_server.git";
-    ref = version;
-    rev = "096fbb64d676edd789fc2d483503fbf6f41de8a1";
+    ref = "master";
+    rev = "cdcb01019e441f0e117376c84aa4aebc315d5173";
   };
+
+  # Patch for strange libgpr2 quirk
+  # 20240618
+  patches = [ ./lsp-gpr_files.adb.patch ];
 
   nativeBuildInputs = [
     gprbuild

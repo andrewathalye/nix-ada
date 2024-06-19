@@ -46,7 +46,9 @@ stdenv.mkDerivation rec {
   installPhase = ''
     runHook preInstall
 
+    mkdir -p $out/share
     gprinstall --prefix=$out -p -Pgnat/gnatdoc.gpr -XLIBRARY_TYPE=relocatable
+    cp -r share/gnatdoc $out/share/
 
     runHook postInstall
   '';

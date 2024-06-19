@@ -1,0 +1,16 @@
+diff --git a/lal/core/lal-highlighters.adb b/lal/core/lal-highlighters.adb
+index 8a4fc46..3f49bec 100644
+--- a/lal/core/lal-highlighters.adb
++++ b/lal/core/lal-highlighters.adb
+@@ -402,7 +402,10 @@ package body LAL.Highlighters is
+ 
+          when Ada_Comment =>
+             return Aspect_Prefix (Comment, In_Aspect);
+-         when Ada_Prep_Line =>
++         when Ada_Prep_Line |
++              Ada_Format_String_Start |
++              Ada_Format_String_Mid   |
++              Ada_Format_String_End  =>
+             return Aspect_Prefix (None, In_Aspect);
+       end case;
+    end To_Style;

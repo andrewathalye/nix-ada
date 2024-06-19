@@ -26,15 +26,15 @@ rec {
    alire-index = callPackage ./alire-index {};
 
    # Updated GNATCOLL for Python <=3.12 support
-   gnatcoll-python3-patched-p1 = gnatcoll-python3.overrideAttrs (final:
-    {
-      version = "24.2";
-      src = fetchzip {
-         url = "https://github.com/AdaCore/gnatcoll-bindings/archive/refs/heads/24.2.zip";
-         hash = "sha256-LoeZspeO5siSuIcA6iuRABlpfSlpJJuxnhSvlbIYfzE=";
-      };
-    });
-   gnatcoll-python3-patched = gnatcoll-python3-patched-p1.override { python3 = python3; };
+#   gnatcoll-python3-patched-p1 = gnatcoll-python3.overrideAttrs (final:
+#    {
+#      version = "24.2";
+#      src = fetchzip {
+#         url = "https://github.com/AdaCore/gnatcoll-bindings/archive/refs/heads/24.2.zip";
+#         hash = "sha256-LoeZspeO5siSuIcA6iuRABlpfSlpJJuxnhSvlbIYfzE=";
+#      };
+#    });
+#   gnatcoll-python3-patched = gnatcoll-python3-patched-p1.override { python3 = python3; };
    # Force this gnatcoll to use the current default Python version (instead of hardcoded 3.9)
 
    types-gdb = callPackage ./types-gdb {};  
@@ -45,7 +45,8 @@ rec {
    adasat = callPackage ./adasat {};
 
    # Tier B
-   langkit = callPackage ./langkit { inherit adasat types-gdb e3-core e3-testsuite gnat-gdb-scripts; };
+   prettier-ada = callPackage ./prettier-ada { inherit vss; };
+   langkit = callPackage ./langkit { inherit adasat types-gdb e3-core e3-testsuite gnat-gdb-scripts prettier-ada; };
    langkit-support = callPackage ./langkit-support { inherit langkit; };
    libgpr2 = callPackage ./libgpr2 { inherit langkit-support; };
    libadalang = callPackage ./libadalang { inherit langkit langkit-support libgpr2; };
@@ -70,5 +71,5 @@ rec {
    ada-language-server-glib = ada-language-server.override { glibSupport = true; };
 
    # Tier E
-   gnatstudio = callPackage ./gnatstudio { inherit gtkada libadalang libadalang-python libadalang-tools vss ada-spawn-glib ada-language-server-glib ada-language-server gnatcoll-python3-patched; };
+   gnatstudio = callPackage ./gnatstudio { inherit gtkada libadalang libadalang-python libadalang-tools vss ada-spawn-glib ada-language-server-glib ada-language-server gnatcoll-python3; };
 }

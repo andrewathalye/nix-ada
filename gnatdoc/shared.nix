@@ -1,10 +1,10 @@
 { fetchgit }:
 rec {
-  version = "24.2";
+  version = "24.2-20240528-git";
   
   src = fetchGit {
     url = "https://github.com/AdaCore/gnatdoc.git";
-    ref = version;
-    rev = "52e560cb16e9f832eae4071dd3cff0127e43682b";
+    ref = "master";
+    rev = "1c7ba55cdc69cf169be1d12ca3c81751668c0117";
   };
 }

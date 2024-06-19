@@ -11,12 +11,12 @@
 
 stdenv.mkDerivation rec {
   pname = "libadalang-tools";
-  version = "24.2";
+  version = "24.2-20240618-git";
   
   src = fetchGit {
     url = "https://github.com/AdaCore/libadalang-tools.git";
-    ref = version;
-    rev = "0b842b579a68a2302a2fdc6b59688e2ce7b0d03b";
+    ref = "master";
+    rev = "2e14c0d664e7b636b2b06dc26d981319614bd01a";
   };
   
   nativeBuildInputs = [

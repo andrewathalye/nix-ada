@@ -8,12 +8,12 @@
 
 stdenv.mkDerivation rec {
   pname = "vss";
-  version = "24.2";
+  version = "24.2-20240528";
   
   src = fetchGit {
     url = "https://github.com/AdaCore/VSS.git";
-    ref = version;
-    rev = "1c49a43be7e29b609b024aec438e65e0c46aff0d";
+    ref = "master";
+    rev = "75f32463d38a184a21af5a371fdde2f6dd2641c2";
   };
   
   nativeBuildInputs = [

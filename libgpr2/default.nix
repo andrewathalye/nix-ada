@@ -1,27 +1,29 @@
 { stdenv
-, fetchzip
+, fetchgit
 , gnat
 , gprbuild
 , glibc
 , langkit-support
+, gnatcoll-core
 , gnatcoll-iconv
 , gnatcoll-gmp
 , which
 }:
 
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   pname = "libgpr2";
-  version = "23.0.0-20230811-git";
+  version = "24.2-20240611-git";
   
-  src = fetchzip {
-    url = "https://github.com/AdaCore/gpr/archive/283892f08eee98bc9ba9adfa60200b7bef9d4bbb.zip";
-    sha256 = "PlOHZESIJGJnE89A4MVbD6Z7XFMvy69q06DU3+ofsMY=";
+  src = fetchGit {
+    url = "https://github.com/AdaCore/gpr.git";
+    ref = "master";
+    rev = "d9220e60b0b6b94785de22b173e73786b5872fd8";
   };
 
-  # 20230811-git
-  gprconfig_kb_src = fetchzip {
-    url = "https://github.com/AdaCore/gprconfig_kb/archive/9dc09852662069ae34511e0950ea9efc5bb4eb4d.tar.gz";
-    sha256 = "IP/TMxyhjWfIU5Z4tKbvaeFHMP/ToYPZrCO56q6dqWM=";
+  gprconfig_kb_src = fetchGit {
+    url = "https://github.com/AdaCore/gprconfig_kb.git";
+    ref = version;
+    rev = "b732437d7828ae83fbdc549bd5e145703e8282cd";
   };
   
   nativeBuildInputs = [
@@ -32,6 +34,7 @@ stdenv.mkDerivation {
 
   buildInputs = [
     langkit-support
+    gnatcoll-core
     gnatcoll-iconv
     gnatcoll-gmp
   ];

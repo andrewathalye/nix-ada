@@ -1,6 +1,6 @@
 { lib
 , buildPythonPackage
-, fetchzip
+, fetchgit
 , adasat
 
 # Python deps
@@ -23,6 +23,7 @@
 , types-docutils
 , yapf
 , pyyaml
+, prettier-ada
 
 # Local python deps
 , types-gdb
@@ -33,11 +34,12 @@
 
 buildPythonPackage rec {
   pname = "langkit";
-  version = "23.0.0-20230802-git";
+  version = "24.2-20240618";
   
-  src = fetchzip {
-    url = "https://github.com/AdaCore/langkit/archive/32b9cd735c7236abfae8c474af88f89ea6664de0.zip";
-    sha256 = "OjLB10nC4vnapXGyxuVM11QlO3PX5bT1BYrgrUHWoJA=";
+  src = fetchGit {
+    url = "https://github.com/AdaCore/langkit.git";
+    ref = "master";
+    rev = "833549c4c664b99bd348e1e3e4ba1b29e114d6a1";
   };
 
   pythonDeps = [ mako pygments autopep8 coverage docutils flake8 funcy mccabe mypy pexpect ptyprocess pycodestyle pyflakes pytest railroad-diagrams sphinx-rtd-theme types-docutils yapf pyyaml ];
@@ -46,6 +48,7 @@ buildPythonPackage rec {
 
   propagatedBuildInputs = [
     adasat
+    prettier-ada
     pythonDeps
     ourDeps
   ];

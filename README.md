@@ -20,3 +20,8 @@ Note
 This is due to a version mismatch between GNAT and GCC in standard nixpkgs (12 vs 13) and the resulting ABI incompatibilities.
 
 If you wish to link an Ada library from nixpkgs with an Ada library from nix-ada, this means you must pull the nixpkgs library from `nix-ada.pkgs.<library name>` instead of importing from `<nixpkgs>`.
+
+Unstable
+--------
+A number of packages included here are 'unstable' according to their upstream sources.
+I’ve made a best effort to collect the most stable versions possible, but for Ada 2022 / GNAT 13-related reasons I’ve not always been able to do so.
