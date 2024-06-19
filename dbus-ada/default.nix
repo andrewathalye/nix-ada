@@ -32,9 +32,15 @@ stdenv.mkDerivation rec {
     dbus-glib
   ];
 
+  buildPhase = ''
+    runHook preBuild
+    make NUM_CPUS=0
+    runHook postBuild
+  '';
+
   installPhase = ''
     runHook preInstall
-    make PREFIX=$out install
+    gprinstall -p -Pdbusada --prefix=$out -XVERSION=${version} --no-manifest
     runHook postInstall
   '';
 }
