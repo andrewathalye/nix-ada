@@ -1,4 +1,5 @@
-result*
-outputs
-docs
-temp
+/result*
+/outputs
+/docs
+/temp
+/test
