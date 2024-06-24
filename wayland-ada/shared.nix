@@ -4,7 +4,7 @@ rec {
 
    src = fetchGit {
       url = "https://github.com/onox/wayland-ada.git";
-      ref = "refs/tags/${version}";
+      ref = "refs/tags/v${version}";
       rev = "f8a9fe05aa29e5e17d23951bc0d21ce4b84148a4";
    };
 }
