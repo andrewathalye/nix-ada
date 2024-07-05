@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
 
   gprconfig_kb_src = fetchGit {
     url = "https://github.com/AdaCore/gprconfig_kb.git";
-    ref = version;
+    ref = "master";
     rev = "b732437d7828ae83fbdc549bd5e145703e8282cd";
   };
   
