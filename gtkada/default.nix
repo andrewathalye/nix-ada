@@ -1,5 +1,5 @@
 { stdenv
-, fetchzip
+, fetchgit
 , gnat
 , gprbuild
 , glibc
@@ -7,13 +7,14 @@
 , pkg-config
 }:
 
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   pname = "gtkada";
-  version = "23.0.0-20230726-git";
+  version = "24.2";
   
-  src = fetchzip {
-    url = "https://github.com/AdaCore/gtkada/archive/b17054b92338d22db46ea0e2c63037b3e50190da.zip";
-    sha256 = "I82n9+je2p/holsgnSrC80z3cyMtXbC2HW7msbnt1XM=";
+  src = fetchGit {
+    url = "https://github.com/AdaCore/gtkada.git";
+    ref = version;
+    rev = "96b4eceb0c088b07a91387da704547818d9192f0";
   };
 
   nativeBuildInputs = [
@@ -28,5 +29,18 @@ stdenv.mkDerivation {
   ];
 
   patches = [ ./gpr-path.patch ];
+
+  # Fix a bug causing symbols to be recursively exported by all consumers
+  # Skip tests
+  buildPhase = ''
+    sed -i 's/-Wl,--export-dynamic//g' gtkada_shared.gpr
+    make build_library_type/static-pic relocatable tools
+  '';
+
+  # Also skips tests
+  installPhase = ''
+    make install/static-pic install/relocatable
+    gprinstall -p -XLIBRARY_TYPE=relocatable --mode=usage --prefix=$out -Psrc/tools/tools.gpr
+  '';
 
 }
