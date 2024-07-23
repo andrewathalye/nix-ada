@@ -1,8 +1,20 @@
 diff --git a/src/d_bus-arguments-containers.adb b/src/d_bus-arguments-containers.adb
-index 0f90a6d..0cf6656 100644
+index 0f90a6d..fb3a21f 100644
 --- a/src/d_bus-arguments-containers.adb
 +++ b/src/d_bus-arguments-containers.adb
-@@ -484,7 +484,7 @@ package body D_Bus.Arguments.Containers is
+@@ -317,7 +317,10 @@ package body D_Bus.Arguments.Containers is
+    is
+    begin
+       if Args.Is_Empty then
+-         raise D_Bus_Error with "Serialization error: Array is empty";
++         Serialize_Container (Args      => Empty_Argument_List,
++                              Code      => a,
++                              Signature => "",
++                              D_Args    => D_Args);
+       end if;
+ 
+       Serialize_Container (Args      => Argument_List_Type (Args),
+@@ -484,7 +487,7 @@ package body D_Bus.Arguments.Containers is
  
     function To_String (Arg : Variant_Type) return String
     is
