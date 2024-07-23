@@ -1,0 +1,134 @@
+diff --git a/src/d_bus-arguments-containers.ads b/src/d_bus-arguments-containers.ads.new
+index 3373cc1..4a2db5b 100644
+--- a/src/d_bus-arguments-containers.ads
++++ b/src/d_bus-arguments-containers.ads.new
+@@ -26,6 +26,8 @@
+ --  executable file might be covered by the GNU Public License.
+ --
+ 
++with Ada.Strings.Unbounded;
++
+ package D_Bus.Arguments.Containers is
+ 
+    -----------
+@@ -72,6 +74,12 @@ package D_Bus.Arguments.Containers is
+       return Argument_List_Type;
+    --  Add array to argument list.
+ 
++   procedure Set_Signature
++     (List : in out Array_Type;
++      Signature : String);
++   --  Sets an empty array's signature. It is an error to call this
++   --  on a list with elements.
++
+    ------------
+    -- STRUCT --
+    ------------
+@@ -199,7 +207,7 @@ private
+ 
+    type Array_Type is new Argument_List_Type
+      and Argument_Type with record
+-      Code : Natural := 0;
++      Signature : Ada.Strings.Unbounded.Unbounded_String;
+    end record;
+ 
+    type Struct_Type is new Argument_List_Type
+diff --git a/src/d_bus-arguments-containers.adb b/src/d_bus-arguments-containers.adb.new
+index 0f90a6d..8e52b95 100644
+--- a/src/d_bus-arguments-containers.adb
++++ b/src/d_bus-arguments-containers.adb.new
+@@ -26,8 +26,6 @@
+ --  executable file might be covered by the GNU Public License.
+ --
+ 
+-with Ada.Strings.Unbounded;
+-
+ with Interfaces.C.Strings;
+ 
+ with dbus_types_h;
+@@ -126,13 +124,18 @@ package body D_Bus.Arguments.Containers is
+      (List     : in out Array_Type;
+       New_Item :        Argument_Type'Class)
+    is
+-      Arg_Code : constant Natural := New_Item.Get_Code;
++      use Ada.Strings.Unbounded;
++
++      Arg_Signature : constant Unbounded_String := To_Unbounded_String
++        (New_Item.Get_Signature);
+    begin
+-      if List.Code /= 0 and then Arg_Code /= List.Code then
++      if List.Signature /= Null_Unbounded_String
++         and then List.Signature /= Arg_Signature
++      then
+          raise D_Bus_Error with "Array can only hold one single complete type";
+       end if;
+ 
+-      List.Code := Arg_Code;
++      List.Signature := Arg_Signature;
+       Argument_List_Type (List).Append (New_Item => New_Item);
+    end Append;
+ 
+@@ -254,9 +257,9 @@ package body D_Bus.Arguments.Containers is
+ 
+    function Get_Signature (Arg : Array_Type) return String
+    is
++      use Ada.Strings.Unbounded;
+    begin
+-      return Get_Tag (Arg => Argument_Type'Class (Arg))
+-        & Arg.First_Element.Get_Signature;
++      return To_String (Arg.Signature);
+    end Get_Signature;
+ 
+    -------------------------------------------------------------------------
+@@ -315,14 +318,17 @@ package body D_Bus.Arguments.Containers is
+      (Args   : Array_Type;
+       D_Args : not null access dbus_message_h.DBusMessageIter)
+    is
++      use Ada.Strings.Unbounded;
+    begin
+-      if Args.Is_Empty then
+-         raise D_Bus_Error with "Serialization error: Array is empty";
++      if Args.Signature = Null_Unbounded_String then
++         raise D_Bus_Error with
++            "Serialization error: Empty arrays must have their signatures" &
++            " set manually (Set_Signature).";
+       end if;
+ 
+       Serialize_Container (Args      => Argument_List_Type (Args),
+                            Code      => a,
+-                           Signature => Args.First_Element.Get_Signature,
++                           Signature => To_String (Args.Signature),
+                            D_Args    => D_Args);
+    end Serialize;
+ 
+@@ -425,6 +431,21 @@ package body D_Bus.Arguments.Containers is
+ 
+    -------------------------------------------------------------------------
+ 
++   procedure Set_Signature
++     (List : in out Array_Type;
++      Signature : String)
++   is
++      use Ada.Strings.Unbounded;
++   begin
++      if List.Signature /= Null_Unbounded_String then
++         raise D_Bus_Error with "Tried to Set_Signature on a non-empty List";
++      end if;
++
++      List.Signature := To_Unbounded_String (Signature);
++   end Set_Signature;
++
++   -------------------------------------------------------------------------
++
+    function To_String (Arg : Array_Type) return String
+    is
+       use Ada.Strings.Unbounded;
+@@ -484,7 +505,7 @@ package body D_Bus.Arguments.Containers is
+ 
+    function To_String (Arg : Variant_Type) return String
+    is
+-      Contained : Argument_Type'Class := Arg.Get_Argument;
++      Contained : constant Argument_Type'Class := Arg.Get_Argument;
+    begin
+       return Contained.Get_Tag & ", " & Contained.To_String;
+    end To_String;

@@ -20,7 +20,8 @@ stdenv.mkDerivation rec {
   };
 
   # Set a variable to be constant to appease GNAT 13’s improved -Werror
-  patches = [ ./d_bus-arguments-containers.adb.patch ];
+  # Also allow empty arrays to be serialised
+  patches = [ ./containers.patch ];
 
   nativeBuildInputs = [
     gnat
