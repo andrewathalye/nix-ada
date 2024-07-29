@@ -1,5 +1,5 @@
 diff --git a/src/d_bus-arguments-containers.adb b/src/d_bus-arguments-containers.adb
-index 0f90a6d..d664036 100644
+index 0f90a6d..a91db57 100644
 --- a/src/d_bus-arguments-containers.adb
 +++ b/src/d_bus-arguments-containers.adb
 @@ -26,8 +26,6 @@
@@ -33,7 +33,7 @@ index 0f90a6d..d664036 100644
        Argument_List_Type (List).Append (New_Item => New_Item);
     end Append;
  
-@@ -168,16 +171,23 @@ package body D_Bus.Arguments.Containers is
+@@ -168,16 +171,29 @@ package body D_Bus.Arguments.Containers is
       (D_Args : not null access dbus_message_h.DBusMessageIter)
        return Array_Type
     is
@@ -54,14 +54,20 @@ index 0f90a6d..d664036 100644
 -      end return;
 +      Argument_List_Type (Result) := Deserialize (D_Sub_Args'Access);
 +
-+      Result.Signature := To_Unbounded_String
-+        (Value (dbus_message_h.dbus_message_iter_get_signature (D_Args)));
++      --  Set signature and skip leading 'a'
++      declare
++         Signature : constant String := Value
++           (dbus_message_h.dbus_message_iter_get_signature (D_Args));
++      begin
++         Result.Signature := To_Unbounded_String
++           (Signature (Signature'First + 1 .. Signature'Last));
++      end;
 +
 +      return Result;
     end Deserialize;
  
     -------------------------------------------------------------------------
-@@ -254,9 +264,9 @@ package body D_Bus.Arguments.Containers is
+@@ -254,9 +270,9 @@ package body D_Bus.Arguments.Containers is
  
     function Get_Signature (Arg : Array_Type) return String
     is
@@ -73,7 +79,7 @@ index 0f90a6d..d664036 100644
     end Get_Signature;
  
     -------------------------------------------------------------------------
-@@ -315,14 +325,17 @@ package body D_Bus.Arguments.Containers is
+@@ -315,14 +331,17 @@ package body D_Bus.Arguments.Containers is
       (Args   : Array_Type;
        D_Args : not null access dbus_message_h.DBusMessageIter)
     is
@@ -94,7 +100,7 @@ index 0f90a6d..d664036 100644
                             D_Args    => D_Args);
     end Serialize;
  
-@@ -425,6 +438,21 @@ package body D_Bus.Arguments.Containers is
+@@ -425,6 +444,21 @@ package body D_Bus.Arguments.Containers is
  
     -------------------------------------------------------------------------
  
@@ -116,7 +122,7 @@ index 0f90a6d..d664036 100644
     function To_String (Arg : Array_Type) return String
     is
        use Ada.Strings.Unbounded;
-@@ -484,7 +512,7 @@ package body D_Bus.Arguments.Containers is
+@@ -484,7 +518,7 @@ package body D_Bus.Arguments.Containers is
  
     function To_String (Arg : Variant_Type) return String
     is
