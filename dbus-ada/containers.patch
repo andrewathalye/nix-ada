@@ -76,7 +76,7 @@ index 0f90a6d..8e52b95 100644
     begin
 -      return Get_Tag (Arg => Argument_Type'Class (Arg))
 -        & Arg.First_Element.Get_Signature;
-+      return To_String (Arg.Signature);
++      return "a" & To_String (Arg.Signature);
     end Get_Signature;
  
     -------------------------------------------------------------------------
