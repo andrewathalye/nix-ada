@@ -1,4 +1,5 @@
-{ pkgs ? import <nixpkgs> { overlays = (import ./overlays.nix {}); } }:
+{ pkgs
+, dbus-ada }:
 
 with pkgs;
 with python3Packages;
@@ -6,6 +7,7 @@ rec {
    inherit gnat;
    inherit gprbuild;
    inherit alire;
+   inherit dbus-ada;
 
    # Any other Ada packages can be found in pkgs.X
    # The above are inherited for convenience
@@ -20,7 +22,6 @@ rec {
    templates-parser = callPackage ./templates-parser {};
    florist = callPackage ./florist {};
    polyorb = callPackage ./polyorb {};
-   dbus-ada = callPackage ./dbus-ada {};
 
    # Nixified version of Alire Index
    alire-index = callPackage ./alire-index {};
