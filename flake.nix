@@ -4,6 +4,7 @@
 
    inputs.dbus-ada-flake = {
      url = "github:andrewathalye/dbus-ada";
+#     url = "git+file:///home/andrew/src/ada/dbus-ada/";
      inputs.nixpkgs.follows = "nixpkgs";
    };
    

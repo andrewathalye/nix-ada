@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1722564860,
-        "narHash": "sha256-Q7FN6zzLrYM8jyXG8/6cMIYvjSVUkKiz3LsOsP4mvqo=",
+        "lastModified": 1722641010,
+        "narHash": "sha256-LlGkExWUJvBVvVi6Q33i9KqDtJihYEVvYZcW7EQ0q4U=",
         "owner": "andrewathalye",
         "repo": "dbus-ada",
-        "rev": "9463e334696ebbd6cbd3463375d19a2cbeada43c",
+        "rev": "1637aac10944ae6406265cbefb9ac34ad3dbba3e",
         "type": "github"
       },
       "original": {
