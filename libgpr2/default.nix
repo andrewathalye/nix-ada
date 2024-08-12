@@ -2,7 +2,6 @@
 , fetchgit
 , gnat
 , gprbuild
-, glibc
 , langkit-support
 , gnatcoll-core
 , gnatcoll-iconv

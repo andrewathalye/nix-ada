@@ -2,7 +2,6 @@
 , fetchgit
 , gnat
 , gprbuild
-, glibc
 , gtk3
 , pkg-config
 }:

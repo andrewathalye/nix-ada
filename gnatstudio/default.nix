@@ -5,7 +5,6 @@
 # Build-time
 , gnat
 , gprbuild
-, glibc
 , pkg-config
 , gnatcoll-db2ada
 , wrapGAppsHook

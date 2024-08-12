@@ -22,7 +22,8 @@ rec {
    templates-parser = callPackage ./templates-parser {};
    florist = callPackage ./florist {};
    polyorb = callPackage ./polyorb {};
-
+   gnat_util = callPackage ./gnat_util {};
+  
    # Nixified version of Alire Index
    alire-index = callPackage ./alire-index {};
 
@@ -63,6 +64,7 @@ rec {
    wayland-ada = callPackage ./wayland-ada { inherit wayland-ada-scanner alire-index; };
 
    # Tier C
+   gnatcoverage = callPackage ./gnatcoverage { inherit gnat_util libadalang; };
    libadalang-tools = callPackage ./libadalang-tools { inherit libadalang templates-parser vss; };
    lal-refactor = callPackage ./lal-refactor { inherit libadalang-tools vss; };
    gnatdoc = callPackage ./gnatdoc { inherit libgnatdoc vss ada-markdown; };

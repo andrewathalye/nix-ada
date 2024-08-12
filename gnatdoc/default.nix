@@ -2,7 +2,6 @@
 , fetchgit
 , gnat
 , gprbuild
-, glibc
 , ada-markdown
 , vss
 , libgnatdoc

@@ -3,7 +3,6 @@
 , fetchgit
 , gnat
 , gprbuild
-, glibc
 , libadalang
 , libadalang-python
 , libadalang-tools

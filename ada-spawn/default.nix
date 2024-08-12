@@ -3,7 +3,6 @@
 , fetchzip
 , gnat
 , gprbuild
-, glibc
 , glib
 , glibSupport ? false, gtkada
 }:

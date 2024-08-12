@@ -2,7 +2,6 @@
 , fetchzip
 , gnat
 , gprbuild
-, glibc
 , gnatcoll-core
 , gnatcoll-iconv
 , gnatcoll-gmp

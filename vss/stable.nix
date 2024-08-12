@@ -2,7 +2,6 @@
 , fetchzip
 , gnat
 , gprbuild
-, glibc
 , pkg-config
 }:
 

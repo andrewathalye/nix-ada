@@ -1,0 +1,22 @@
+diff --git a/tools/gnatcov/gnatcov.gpr b/tools/gnatcov/gnatcov.gpr
+index 45c6194..0faf149 100644
+--- a/tools/gnatcov/gnatcov.gpr
++++ b/tools/gnatcov/gnatcov.gpr
+@@ -250,13 +250,11 @@ project Gnatcov is
+ 
+    package Linker is
+       for Required_Switches use
+-        ("-l:libopcodes.a",
+-         "-l:libbfd.a",
++        ("-lopcodes",
++         "-lbfd",
+          "-l:libiberty.a",
+-         "-l:libsframe.a",
+-         "-l:libz.a",
+-         "-static-libstdc++",
+-         "-static-libgcc");
++         "-lsframe",
++         "-lz");
+    end Linker;
+ 
+    package Binder is

@@ -1,0 +1,51 @@
+diff --git a/gcc/Makefile.in b/gcc/Makefile.in
+index ae89af1..a2eae23 100644
+--- a/gcc/Makefile.in
++++ b/gcc/Makefile.in
+@@ -3146,45 +3146,7 @@ s-fixinc_list : $(GCC_PASSES)
+ # Build fixed copies of system files.
+ # Abort if no system headers available, unless building a crosscompiler.
+ # FIXME: abort unless building --without-headers would be more accurate and less ugly
+-stmp-fixinc: gsyslimits.h macro_list fixinc_list \
+-  $(build_objdir)/fixincludes/fixincl \
+-  $(build_objdir)/fixincludes/fixinc.sh
+-	rm -rf include-fixed; mkdir include-fixed
+-	-chmod a+rx include-fixed
+-	if [ -d ../prev-gcc ]; then \
+-	  cd ../prev-gcc && \
+-	  $(MAKE) real-$(INSTALL_HEADERS_DIR) DESTDIR=`pwd`/../gcc/ \
+-	    libsubdir=. ; \
+-	else \
+-	  set -e; for ml in `cat fixinc_list`; do \
+-	    sysroot_headers_suffix=`echo $${ml} | sed -e 's/;.*$$//'`; \
+-	    multi_dir=`echo $${ml} | sed -e 's/^[^;]*;//'`; \
+-	    fix_dir=include-fixed$${multi_dir}; \
+-	    if ! $(inhibit_libc) && test ! -d ${BUILD_SYSTEM_HEADER_DIR}; then \
+-	      echo The directory that should contain system headers does not exist: >&2 ; \
+-	      echo "  ${BUILD_SYSTEM_HEADER_DIR}" >&2 ; \
+-	      tooldir_sysinc=`echo "${gcc_tooldir}/sys-include" | sed -e :a -e "s,[^/]*/\.\.\/,," -e ta`; \
+-	      if test "x${BUILD_SYSTEM_HEADER_DIR}" = "x$${tooldir_sysinc}"; \
+-	      then sleep 1; else exit 1; fi; \
+-	    fi; \
+-	    $(mkinstalldirs) $${fix_dir}; \
+-	    chmod a+rx $${fix_dir} || true; \
+-	    (TARGET_MACHINE='$(target)'; srcdir=`cd $(srcdir); ${PWD_COMMAND}`; \
+-	      SHELL='$(SHELL)'; MACRO_LIST=`${PWD_COMMAND}`/macro_list ; \
+-	      gcc_dir=`${PWD_COMMAND}` ; \
+-	      export TARGET_MACHINE srcdir SHELL MACRO_LIST && \
+-	      cd $(build_objdir)/fixincludes && \
+-	      $(SHELL) ./fixinc.sh "$${gcc_dir}/$${fix_dir}" \
+-	        $(BUILD_SYSTEM_HEADER_DIR) $(OTHER_FIXINCLUDES_DIRS) ); \
+-	    rm -f $${fix_dir}/syslimits.h; \
+-	    if [ -f $${fix_dir}/limits.h ]; then \
+-	      mv $${fix_dir}/limits.h $${fix_dir}/syslimits.h; \
+-	    else \
+-	      cp $(srcdir)/gsyslimits.h $${fix_dir}/syslimits.h; \
+-	    fi; \
+-	    chmod a+r $${fix_dir}/syslimits.h; \
+-	  done; \
+-	fi
++stmp-fixinc:
+ 	$(STAMP) stmp-fixinc
+ #
+ 
