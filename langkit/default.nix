@@ -1,7 +1,6 @@
 { lib
 , buildPythonPackage
 , fetchgit
-, adasat
 
 # Python deps
 , mako
@@ -11,6 +10,7 @@
 , docutils
 , flake8
 , funcy
+, importlib-metadata
 , mccabe
 , mypy
 , pexpect
@@ -22,32 +22,32 @@
 , sphinx-rtd-theme
 , types-docutils
 , yapf
-, pyyaml
-, prettier-ada
 
 # Local python deps
 , types-gdb
 , e3-core
 , e3-testsuite
 , gnat-gdb-scripts
+, prettier-ada
 }:
 
 buildPythonPackage rec {
   pname = "langkit";
-  version = "24.2-20240618";
+  version = "25.0.0-20250115";
   
   src = fetchGit {
     url = "https://github.com/AdaCore/langkit.git";
     ref = "master";
-    rev = "833549c4c664b99bd348e1e3e4ba1b29e114d6a1";
+    rev = "220bd77c0145db54d86ddfefcd66bffabbf1a925";
   };
 
-  pythonDeps = [ mako pygments autopep8 coverage docutils flake8 funcy mccabe mypy pexpect ptyprocess pycodestyle pyflakes pytest railroad-diagrams sphinx-rtd-theme types-docutils yapf pyyaml ];
+  patches = [ ./diagnostics.py.patch ];
+
+  pythonDeps = [ mako pygments autopep8 coverage docutils flake8 funcy importlib-metadata mccabe mypy pexpect ptyprocess pycodestyle pyflakes pytest railroad-diagrams sphinx-rtd-theme types-docutils yapf ];
 
   ourDeps = [ e3-core e3-testsuite gnat-gdb-scripts ];
 
   propagatedBuildInputs = [
-    adasat
     prettier-ada
     pythonDeps
     ourDeps

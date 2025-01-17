@@ -6,7 +6,7 @@
 
 stdenv.mkDerivation {
   pname = "adasat";
-  version = "24.2-20240103-git";
+  version = "25.0.0";
   
   src = fetchGit {
     url = "https://github.com/AdaCore/AdaSAT.git";
@@ -30,7 +30,7 @@ stdenv.mkDerivation {
   installPhase = ''
     runHook preInstall
 
-    gprinstall --prefix=$out -XLIBRARY_TYPE=relocatable -XBUILD_MODE=prod -p -Padasat
+    gprinstall -a --prefix=$out -XLIBRARY_TYPE=relocatable -XBUILD_MODE=prod -p -Padasat
 
     runHook postInstall
   '';

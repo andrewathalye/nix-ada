@@ -8,18 +8,19 @@
 , gnatcoll-iconv
 , langkit-support
 , langkit
+, langkit-lktlang
 , libgpr2
 , python3
 }:
 
 stdenv.mkDerivation rec {
   pname = "libadalang";
-  version = "24.2-20240612-git";
+  version = "25.0.0-20250115";
   
   src = fetchGit {
     url = "https://github.com/AdaCore/libadalang.git";
     ref = "master";
-    rev = "3e54fdea509f1daf3d492b61f7bc11678e7967c4";
+    rev = "020ddb23c2824083c6cb21b3d3594fb7db01c604";
   };
 
   nativeBuildInputs = [
@@ -34,25 +35,28 @@ stdenv.mkDerivation rec {
     gnatcoll-gmp
     gnatcoll-iconv
     langkit
+    langkit-lktlang
     langkit-support
     libgpr2
   ];
 
   configurePhase = ''
     runHook preConfigure
-    python3 manage.py generate
+
+    # TODO workaround for lktlang bug
+    LD_LIBRARY_PATH=${langkit-lktlang.out}/lib python3 manage.py generate
     runHook postConfigure
   '';
 
   buildPhase = ''
     runHook preBuild
-    python manage.py build --disable-build-warnings --library-types=relocatable
+    python manage.py build --disable-build-warnings
     runHook postBuild
   '';
 
   installPhase = ''
     runHook preInstall
-    python manage.py install $out --library-types=relocatable
+    python manage.py install $out
     runHook postInstall
   '';
 }

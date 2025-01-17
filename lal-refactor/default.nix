@@ -8,12 +8,12 @@
 
 stdenv.mkDerivation rec {
   pname = "lal-refactor";
-  version = "24.2-20240613-git";
+  version = "25.0.0";
   
   src = fetchGit {
     url = "https://github.com/AdaCore/lal-refactor.git";
     ref = "edge";
-    rev = "9a09c7f910fb5a229741cb41099e97625ea6db1b";
+    rev = "635edce9844e6091f359d63a0194efe8530c5855";
   };
 
   nativeBuildInputs = [

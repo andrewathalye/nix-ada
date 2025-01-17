@@ -11,12 +11,12 @@
 
 stdenv.mkDerivation rec {
   pname = "libgpr2";
-  version = "24.2-20240611-git";
+  version = "25.0.0-20250116";
   
   src = fetchGit {
     url = "https://github.com/AdaCore/gpr.git";
-    ref = "master";
-    rev = "d9220e60b0b6b94785de22b173e73786b5872fd8";
+    ref = "main";
+    rev = "1b614e9fbd9ecf6dfaee8573b6a68414bce3fc41";
   };
 
   gprconfig_kb_src = fetchGit {

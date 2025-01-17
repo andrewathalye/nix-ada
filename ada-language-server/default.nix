@@ -13,6 +13,7 @@
 , ada-spawn-glib
 , lal-refactor
 , ada-libfswatch
+, gnatformat
 , glibSupport ? false
 }:
 
@@ -21,17 +22,13 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "ada-language-server" + optionalString glibSupport "-glib";
-  version = "24.2-20240618-git";
+  version = "26.0.20412191";
   
   src = fetchGit {
     url = "https://github.com/AdaCore/ada_language_server.git";
     ref = "master";
-    rev = "cdcb01019e441f0e117376c84aa4aebc315d5173";
+    rev = "cd011faf96e1a7b84148ef65a0eeeb14c25a7c54";
   };
-
-  # Patch for strange libgpr2 quirk
-  # 20240618
-  patches = [ ./lsp-gpr_files.adb.patch ];
 
   nativeBuildInputs = [
     gprbuild
@@ -46,6 +43,7 @@ stdenv.mkDerivation rec {
     libgpr2
     lal-refactor
     ada-libfswatch
+    gnatformat
   ]
   ++ optional glibSupport ada-spawn-glib
   ++ optional (!glibSupport) ada-spawn;

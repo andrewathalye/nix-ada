@@ -7,6 +7,7 @@
 , gnatcoll-gmp
 , langkit
 , python3
+, adasat
 }:
 
 stdenv.mkDerivation {
@@ -14,11 +15,12 @@ stdenv.mkDerivation {
   version = langkit.version;
   
   src = langkit.src;
-  
+
   nativeBuildInputs = [
     gprbuild
     gnat
     langkit
+    python3
   ];
 
   buildInputs = [
@@ -28,12 +30,16 @@ stdenv.mkDerivation {
     gnatcoll-gmp
   ];
 
+  propagatedBuildInputs = [
+    adasat
+  ];
+
   dontConfigure = true;
   
   buildPhase = ''
     runHook preBuild
-    
-    python3 manage.py build-langkit-support --library-types=relocatable
+
+    python3 manage.py build-langkit-support
     
     runHook postBuild
   '';
@@ -41,7 +47,7 @@ stdenv.mkDerivation {
   installPhase = ''
     runHook preInstall
 
-    python3 manage.py install-langkit-support --library-types=relocatable $out
+    python3 manage.py install-langkit-support $out
 
     runHook postInstall
   '';

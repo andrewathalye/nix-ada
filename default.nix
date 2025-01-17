@@ -1,13 +1,12 @@
-{ pkgs
-, dbus-ada }:
+{ pkgs }:
 
 with pkgs;
 with python3Packages;
 rec {
-   inherit gnat;
-   inherit gprbuild;
-   inherit alire;
-   inherit dbus-ada;
+   inherit gnat14;
+   gnat = gnat14;
+
+   inherit (gnat14Packages) gprbuild alire;
 
    # Any other Ada packages can be found in pkgs.X
    # The above are inherited for convenience
@@ -27,31 +26,19 @@ rec {
    # Nixified version of Alire Index
    alire-index = callPackage ./alire-index {};
 
-   # Updated GNATCOLL for Python <=3.12 support
-#   gnatcoll-python3-patched-p1 = gnatcoll-python3.overrideAttrs (final:
-#    {
-#      version = "24.2";
-#      src = fetchzip {
-#         url = "https://github.com/AdaCore/gnatcoll-bindings/archive/refs/heads/24.2.zip";
-#         hash = "sha256-LoeZspeO5siSuIcA6iuRABlpfSlpJJuxnhSvlbIYfzE=";
-#      };
-#    });
-#   gnatcoll-python3-patched = gnatcoll-python3-patched-p1.override { python3 = python3; };
-   # Force this gnatcoll to use the current default Python version (instead of hardcoded 3.9)
-
    types-gdb = callPackage ./types-gdb {};  
    e3-core = callPackage ./e3-core {};
    e3-testsuite = callPackage ./e3-testsuite { inherit e3-core; };
    gnat-gdb-scripts = callPackage ./gnat-gdb-scripts {};
-
    adasat = callPackage ./adasat {};
 
    # Tier B
    prettier-ada = callPackage ./prettier-ada { inherit vss; };
-   langkit = callPackage ./langkit { inherit adasat types-gdb e3-core e3-testsuite gnat-gdb-scripts prettier-ada; };
-   langkit-support = callPackage ./langkit-support { inherit langkit; };
+   langkit = callPackage ./langkit { inherit types-gdb e3-core e3-testsuite gnat-gdb-scripts prettier-ada; };
+   langkit-support = callPackage ./langkit-support { inherit langkit adasat; };
+   langkit-lktlang = callPackage ./langkit-lktlang { inherit langkit langkit-support adasat; };
    libgpr2 = callPackage ./libgpr2 { inherit langkit-support; };
-   libadalang = callPackage ./libadalang { inherit langkit langkit-support libgpr2; };
+   libadalang = callPackage ./libadalang { inherit langkit langkit-lktlang langkit-support libgpr2; };
    libadalang-python = callPackage ./libadalang/python.nix { inherit libadalang; };
 
    ada-spawn = callPackage ./ada-spawn { inherit gtkada; };
@@ -65,12 +52,13 @@ rec {
 
    # Tier C
    gnatcoverage = callPackage ./gnatcoverage { inherit gnat_util libadalang; };
+   gnatformat = callPackage ./gnatformat { inherit prettier-ada libadalang; };
    libadalang-tools = callPackage ./libadalang-tools { inherit libadalang templates-parser vss; };
    lal-refactor = callPackage ./lal-refactor { inherit libadalang-tools vss; };
    gnatdoc = callPackage ./gnatdoc { inherit libgnatdoc vss ada-markdown; };
    
    # Tier D
-   ada-language-server = callPackage ./ada-language-server { inherit libadalang libadalang-tools vss ada-spawn ada-spawn-glib libgnatdoc libgpr2 lal-refactor ada-libfswatch libadalang-python; };
+   ada-language-server = callPackage ./ada-language-server { inherit libadalang libadalang-tools vss ada-spawn ada-spawn-glib libgnatdoc libgpr2 lal-refactor ada-libfswatch libadalang-python gnatformat; };
    ada-language-server-glib = ada-language-server.override { glibSupport = true; };
 
    # Tier E

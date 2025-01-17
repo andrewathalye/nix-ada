@@ -12,12 +12,12 @@
 
 stdenv.mkDerivation {
   pname = "prettier-ada";
-  version = "20240618-git";
+  version = "25.0.0";
 
   src = fetchGit {
     url = "https://github.com/AdaCore/prettier-ada";
-    ref = "main";
-    rev = "4635f872b1992376f89735d9dd987ad93648fe96";
+    ref = "25.0";
+    rev = "26b003699e2ef31baa9a95ce9313b4bde6efe701";
   };
 
   nativeBuildInputs = [
