@@ -35,6 +35,7 @@ stdenv.mkDerivation rec {
       gprbuild
       wayland-ada-scanner
       alire
+      alire-index
       git
    ];
 
