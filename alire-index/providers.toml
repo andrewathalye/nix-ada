@@ -1,0 +1,21 @@
+a0b_time_platform = [
+"a0b_armv7m_systick_clock",
+"a0b_armv7m_systick_clock_timer",
+]
+a0b_timer_platform = [
+"a0b_armv7m_systick_clock_timer",
+"a0b_atsam3x8e_tc5_timer",
+"a0b_stm32f401_tim11_timer",
+]
+florist = [
+"florist_blady",
+]
+gnat = [
+"gnat_arm_elf",
+"gnat_avr_elf",
+"gnat_external",
+"gnat_native",
+"gnat_riscv64_elf",
+"gnat_xtensa_esp32_elf",
+]
+

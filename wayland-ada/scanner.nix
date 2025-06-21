@@ -29,8 +29,11 @@ stdenv.mkDerivation {
       runHook preBuild
       cd wayland_ada_scanner
 
-      # Work around Alire bug in Nix builds
-      HOME=${alire-index.out} alr build
+      # TODO workaround lack of Alire support for vendored indexes / airgapped builds
+      # TODO this is an Alire bug, reported as #1769 on alire-project/alire
+      cp -rL ${alire-index.out}/.config /tmp/.config
+      chmod -R u+w /tmp/.config
+      HOME=/tmp alr build
 
       runHook postBuild
    '';

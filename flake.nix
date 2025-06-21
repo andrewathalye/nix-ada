@@ -1,6 +1,6 @@
 {
    #inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-   inputs.nixpkgs.url = "github:NixOS/nixpkgs?rev=310c5c4d3fd457d80365f52c71ac80b9d54a7cc4";
+   inputs.nixpkgs.url = "github:NixOS/nixpkgs?rev=b2485d56967598da068b5a6946dadda8bfcbcd37";
 
    inputs.dbus-ada-flake = {
      url = "github:andrewathalye/dbus-ada";
