@@ -1,10 +1,11 @@
-{ pkgs }:
+{ pkgs, dbus-ada }:
 
 with pkgs;
 with python3Packages;
 rec {
    # Any other Ada packages can be found in pkgs.X
    inherit pkgs;
+   inherit dbus-ada;
    
    # Tier A
    gtkada = callPackage ./gtkada {};
