@@ -1,0 +1,17 @@
+D_Bus/Ada TODOs
+===============
+
+* Simplify container To_String function.
+* Add Get (Index) to list.
+* Use Get () in dict entry getters, raise own exceptions.
+* Raise own exception in variant's Get_Argument function.
+* Howto: work with variants?
+* Add test for complex argument marshaling/unmarshaling.
+* Make message type controlled and free thin msg?
+* Msg: Add Image() function and print message details on exceptions.
+* Provide thin binding for 32,64 LONG_BIT
+  - Currently, functions in the thin binding which rely on stddef_h.size_t do
+    not work correctly.
+  - This only concerns developers using the thin binding directly, the thick
+    binding does not use them.
+  - Affected functions: dbus_malloc, dbus_malloc0, dbus_realloc.

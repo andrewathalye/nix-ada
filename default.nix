@@ -1,11 +1,10 @@
-{ pkgs, dbus-ada }:
+{ pkgs }:
 
 with pkgs;
 with python3Packages;
 rec {
    # Any other Ada packages can be found in pkgs.X
    inherit pkgs;
-   inherit dbus-ada;
    
    # Tier A
    gtkada = callPackage ./gtkada {};
@@ -17,6 +16,9 @@ rec {
    florist = callPackage ./florist {};
    polyorb = callPackage ./polyorb {};
    gnat_util = callPackage ./gnat_util {};
+
+   #OBSOLETE
+   dbus-ada = callPackage ./dbus-ada {};
   
    # Nixified version of Alire Index
    alire-index = callPackage ./alire-index {};

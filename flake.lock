@@ -1,25 +1,5 @@
 {
   "nodes": {
-    "dbus-ada-flake": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1723491035,
-        "narHash": "sha256-fAKlQ+eljIgLdOCjmzwUSFnARb5ranKvaOVIcnEeE4I=",
-        "owner": "andrewathalye",
-        "repo": "dbus-ada",
-        "rev": "1bbeeaff4864ab54ec523bd7cfaad8a238d08ea4",
-        "type": "github"
-      },
-      "original": {
-        "owner": "andrewathalye",
-        "repo": "dbus-ada",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1750400657,
@@ -38,7 +18,6 @@
     },
     "root": {
       "inputs": {
-        "dbus-ada-flake": "dbus-ada-flake",
         "nixpkgs": "nixpkgs"
       }
     }
