@@ -46,8 +46,7 @@ stdenv.mkDerivation rec {
       rm alire.toml
       ln -s ${alire_toml} alire.toml
 
-      # Workaround for Alire bug
-      HOME=${alire-index.out} alr build
+      alireBuild
       runHook postBuild
    '';
 
