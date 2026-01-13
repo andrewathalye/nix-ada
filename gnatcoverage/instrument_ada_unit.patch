@@ -1,0 +1,23 @@
+diff --git a/tools/gnatcov/instrument-ada_unit.adb b/tools/gnatcov/instrument-ada_unit.adb.new
+index 74a5a3f..b85ac69 100644
+--- a/tools/gnatcov/instrument-ada_unit.adb
++++ b/tools/gnatcov/instrument-ada_unit.adb.new
+@@ -2609,7 +2609,7 @@ package body Instrument.Ada_Unit is
+                (RC,
+                 F_Stmts      => NP_Nodes.Stmt_List,
+                 F_Exceptions => No_Node_Rewriting_Handle),
+-           F_End_Name   => No_Node_Rewriting_Handle);
++                F_Finally_Part   => No_Node_Rewriting_Handle);
+ 
+       --  Create an instantiation for this generic subprogram
+ 
+@@ -4202,7 +4202,8 @@ package body Instrument.Ada_Unit is
+               Create_Handled_Stmts
+                 (Handle       => UIC.Rewriting_Context,
+                  F_Stmts      => Stmt_list_RH,
+-                 F_Exceptions => No_Node_Rewriting_Handle);
++                 F_Exceptions => No_Node_Rewriting_Handle,
++                 F_Finally_Part => No_Node_Rewriting_Handle);
+             Proc_Name      : constant Node_Rewriting_Handle :=
+               Create_End_Name
+                 (Handle => UIC.Rewriting_Context,

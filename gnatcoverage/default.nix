@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
     rev = "179943110f2bcb7ddfe7fc5bd11ddc00573825cc";
   };
 
-  patches = [ ./gnatcov.gpr.patch ];
+  patches = [ ./gnatcov.gpr.patch ./instrument_ada_unit.patch ];
   
   nativeBuildInputs = [
     gprbuild
