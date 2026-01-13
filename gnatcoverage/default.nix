@@ -2,7 +2,7 @@
 , gnat
 , fetchzip
 , gprbuild
-, gnatcoll-core
+, gnatPackages
 , libadalang
 , zlib
 , libbfd
@@ -10,16 +10,19 @@
 , libiberty
 , binutils
 , gnat_util
+, templates-parser
+, stable-sloc
 }:
 
+with gnatPackages;
 stdenv.mkDerivation rec {
   pname = "gnatcoverage";
-  version = "24.2-20240731";
+  version = "26.0.0-20250112";
   
   src = fetchGit {
     url = "https://github.com/AdaCore/gnatcoverage.git";
     ref = "master";
-    rev = "0333810f95f49619681c6a72ce2e554ed0181887";
+    rev = "179943110f2bcb7ddfe7fc5bd11ddc00573825cc";
   };
 
   patches = [ ./gnatcov.gpr.patch ];
@@ -38,6 +41,9 @@ stdenv.mkDerivation rec {
     libiberty
     binutils
     gnat_util
+    gpr2
+    templates-parser
+    stable-sloc
   ];
 
   configurePhase = ''

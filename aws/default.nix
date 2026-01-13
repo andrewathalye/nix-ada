@@ -6,12 +6,12 @@
 , gprbuild
 
 # Dependencies
-, xmlada
+, gnatPackages
 , openssl
 , zlib
-, gnatcoll-core
 }:
 
+with gnatPackages;
 stdenv.mkDerivation {
   pname = "aws";
   version = "24.2-20240607";

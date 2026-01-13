@@ -1,0 +1,329 @@
+with "gnat_util", "gnatcoll", "gpr2", "libadalang", "libclang", "stable_sloc", "templates_parser";
+
+project Gnatcov is
+
+   type Boolean is ("False", "True");
+
+   --  This project file is used:
+   --
+   --  * As the root project when building the "gnatcov" driver program or the
+   --    gnatcov32/gnatcov64 internal programs.
+   --
+   --  * As a subproject when building the trace adapters implemented on top of
+   --    some gnatcov units (for instance, trace32).
+   --
+   --  The following externals ("scenario variables") allows to instruct
+   --  gprbuild which subset of sources to build: which program ("gnatcov"
+   --  driver, ...) and with what optional feature (C instrumentation support).
+   --  This project file also use them to derive various build settings: "main"
+   --  sources, object directory to use, ...
+
+   -------------------------
+   -- Mandatory externals --
+   -------------------------
+
+   type Part_Type is
+     ("lib32", "lib64", "driver", "gnatcov32", "gnatcov64", "compiler");
+   Part : Part_Type := external ("PART");
+   --  Which program this project should build:
+   --
+   --  * "lib32/lib64": gnatcov.gpr is used as a subproject, the main is a
+   --    trace adapter for 32-bit binary traces (lib32) or 64-bit ones (lib64).
+   --
+   --  * "driver": the user-facing "gnatcov" program, whose job is to run
+   --    gnatcov32 or gnatcov64.
+   --
+   --  * "gnatcov32": the homonym program, for everything that needs to deal
+   --    with binary traces of 32-bit programs.
+   --
+   --  * "compiler": a compiler wrapper executable, used to implement the
+   --    integrated instrumentation approach.
+   --
+   --  * "gnatcov64": the homonym program, for everything else.
+
+   ------------------------
+   -- Optional externals --
+   ------------------------
+
+   C_Support : Boolean := external ("C_SUPPORT", "True");
+   --  Whether to include support source instrumentation for C
+   --
+   --  Enabling this is useful for gnatcov64 only (at it is the only program
+   --  that is supposed to run the C/C++ instrumenter): it will create link
+   --  issue in some other configurations (because of the need for Clang link
+   --  options), and will just create bloat in others (link of Clang code that
+   --  is dead code in practice): force it to "False" in all but the
+   --  "gnatcov64" configuration.
+
+   case Part is
+      when "gnatcov64" => null;
+      when others      => C_Support := "False";
+   end case;
+
+   type Build_Mode_Type is ("dev", "prod", "prof");
+   Build_Mode : Build_Mode_Type := external ("BUILD_MODE", "dev");
+   --  Build mode.
+   --
+   --  * "dev" (the default): checks enabled, no optimization, for development.
+   --  * "prod": checks disabled, very optimized, for production.
+   --  * "prof": checks disabled, slightly optimized, for profiling.
+
+   --------------------------------------
+   -- Settings computed from externals --
+   --------------------------------------
+
+   --  The size of addresses we expect the tool we build will handle. Used to
+   --  select source variants implementing 32-bit or 64-bit types, constants
+   --  and subprograms.
+   --
+   --  Note that we build the "gnatcov" driver in 32-bit mode as an
+   --  optimization: unlike "gnatcov64", none of "lib32", "gnatcov32",
+   --  "compiler" and "driver" need source instrumentation support,
+   --  so they all use the same sources, and can thus share the same
+   --  object directory.
+
+   type Bits_Type is ("32", "64");
+   Bits : Bits_Type := "32";
+   case Part is
+      when "lib64" | "gnatcov64" => Bits := "64";
+      when "driver" | "lib32" | "gnatcov32" | "compiler"  => Bits := "32";
+   end case;
+
+   -------------------------------------------
+   -- Selection of alternative source files --
+   -------------------------------------------
+
+   package Naming is
+      for Specification ("Arch") use "arch__" & Bits & ".ads";
+      for Specification ("Qemu_Traces_Entries")
+         use"qemu_traces_entries__" & Bits & ".ads";
+
+      -----------
+      -- Stubs --
+      -----------
+
+      --  In order to reduce the size of produced executables, whenever
+      --  possible, use stubs for units that pull big dependencies into the
+      --  link closure (GPR2, Libadalang, Libclang).
+      --
+      --  Removing such a dependency is possible when the associated feature is
+      --  not used in the selected part: for instance, the gnatcov driver does
+      --  not perform any source instrumentation itself (it delegates it to
+      --  gnatcov64), so it does not need to be linked with Libadalang nor
+      --  Libclang.
+
+      case Part is
+         when "gnatcov64" =>
+            null;
+         when others =>
+            for Specification ("Instrument.Ada_Preprocessing")
+               use "instrument-ada_preprocessing__stub.ads";
+            for Body ("Instrument.Ada_Preprocessing")
+               use "instrument-ada_preprocessing__stub.adb";
+
+            for Specification ("Instrument.Ada_Unit")
+               use "instrument-ada_unit__stub.ads";
+            for Body ("Instrument.Ada_Unit")
+               use "instrument-ada_unit__stub.adb";
+
+            for Body ("Setup_RTS") use "setup_rts__stub.adb";
+      end case;
+
+      case C_Support is
+         when "False" =>
+            for Specification ("Instrument.C") use "instrument-c__stub.ads";
+            for Body ("Instrument.C") use "instrument-c__stub.adb";
+            for Body ("Set_Builtin_Support")
+               use "set_builtin_support_no_c.adb";
+         when "True" =>
+            null;
+      end case;
+
+      for Body_Suffix ("C++") use ".cc";
+
+      for Implementation_Suffix ("Templates") use ".tmplt";
+   end Naming;
+
+   package Coverage is
+
+      --  Ignore units that have an alternative implementation in both parts
+      --  and that consists only in type definitions. GNATcoverage does not
+      --  yet support consolidation when there are units with a different
+      --  implementation.
+
+      Gnatcoverage_Excluded_Units := ("arch", "dis*", "qemu_traces_entries");
+
+      --  Also ignore the instrumentation part in the 32 bits part, consisting
+      --  only in stubs.
+
+      case Part is
+         when "lib32" | "lib64" | "driver" | "gnatcov32" | "compiler" =>
+            Gnatcoverage_Excluded_Units := Gnatcoverage_Excluded_Units
+              & ("instrument*");
+         when "gnatcov64" =>
+            null;
+      end case;
+      for Excluded_Units use Gnatcoverage_Excluded_Units;
+
+      Common_Switches := ("--level=stmt", "--no-subprojects");
+      for Switches ("instrument") use Common_Switches
+
+         --  Include the part as a trace filename prefix to differentiate
+         --  traces produced by the execution of the driver / gnatcov32 /
+         --  gnatcov64
+
+         & ("--dump-filename-prefix=" & Part)
+
+         --  Also rename the filename environment variable to avoid conflicting
+         --  with instrumented tests in the testing environment.
+
+         & ("--dump-filename-env-var=GNATCOV_TRACE_DIR");
+
+      for Switches ("coverage") use Common_Switches;
+   end Coverage;
+
+   ----------------------------
+   -- Configuration of mains --
+   ----------------------------
+
+   case Part is
+      when "lib32" | "lib64" =>
+         for Main use ();
+      when "driver" =>
+         for Main use  ("gnatcov.adb");
+      when "gnatcov32" | "gnatcov64" =>
+         for Main use ("gnatcov_bits_specific.adb");
+      when "compiler" =>
+         for Main use ("compiler_wrappers-gcc.adb");
+   end case;
+
+   package Builder is
+      for Executable ("gnatcov_bits_specific.adb") use Part;
+      for Executable ("gnatcov.adb") use "gnatcov";
+   end Builder;
+
+   -----------------------
+   -- Toolchain options --
+   -----------------------
+
+   package Compiler is
+
+      Ada_Common_Switches :=
+        ("-gnat12", "-gnatwa", "-gnatyg", "-g");
+
+      C_Common_Switches :=
+        ("-DTARGET_BITS=" & Bits, "-Wall", "-Wextra", "-std=c99", "-g");
+
+      Mode_Switches := ();
+      Ada_Mode_Switches := ();
+      C_Mode_Switches := ();
+      CPP_Mode_Switches := ();
+
+      case Build_Mode is
+         when "dev" =>
+            Mode_Switches := ("-O0");
+            Ada_Mode_Switches := ("-gnata", "-gnatwe");
+            C_Mode_Switches := ("-Werror");
+            CPP_Mode_Switches := ("-Werror");
+
+         when "prod" =>
+            Mode_Switches := ("-O2");
+            C_Mode_Switches := ("-DNDEBUG");
+            CPP_Mode_Switches := ("-DNDEBUG");
+
+         when "prof" =>
+            Mode_Switches := ("-Og", "-fno-omit-frame-pointer");
+            C_Mode_Switches := ("-DNDEBUG");
+            CPP_Mode_Switches := ("-DNDEBUG");
+      end case;
+
+      for Default_Switches ("ada")
+        use Ada_Common_Switches & Mode_Switches & Ada_Mode_Switches;
+
+      for Default_Switches ("C")
+        use C_Common_Switches & Mode_Switches & C_Mode_Switches;
+
+      for Default_Switches ("C++")
+        use Mode_Switches & CPP_Mode_Switches;
+
+      for Local_Configuration_Pragmas use "gnat.adc";
+
+      --  As we don't want to compile with clang++ (compilation of
+      --  clang-wrapper.cc errors out), force the use of g++.
+
+      for Driver ("C++") use "g++";
+
+      -- There is no compiler for templates.
+
+      for Driver ("Templates") use "";
+
+   end Compiler;
+
+   package Linker is
+      for Required_Switches use
+        ("-opcodes",
+         "-lbfd",
+         "-liberty",
+         "-lsframe",
+         "-lz");
+   end Linker;
+
+   package Binder is
+      case Build_Mode is
+         when "dev"  => for Default_Switches ("Ada") use ("-Es");
+         when others => null;
+      end case;
+   end Binder;
+
+   package IDE is
+      for VCS_Kind use "git";
+      for VCS_Repository_Root use "../..";
+   end IDE;
+
+   package Analyzer is
+      for Switches ("analyze") use
+        ("-j0",
+         "--incrementality-method=minimal",
+         "--no-subprojects",
+         "--no-inspector",
+         "--no-gnat");
+
+      Filter := ("--show", "age=added+removed");
+      for Switches ("report text") use Filter;
+      for Switches ("report exit-code") use Filter;
+      for Switches ("report code-climate") use Filter & ("--long-desc");
+
+      for Review_File use "analyzer/gnatcov.sar";
+
+      for Output_Dir use "analyzer";
+      --  Relocate outputs outside of object directory because that one is
+      --  cached in CIs and we do not want to store baselines in the cache.
+
+   end Analyzer;
+
+   -------------------------------------------
+   -- Configuration of sources/object files --
+   -------------------------------------------
+
+   for Source_Dirs use (".", "libopcodes_bind", "templates");
+   case C_Support is
+      when "False" => for Excluded_Source_Files use ("clang-wrapper.cc");
+      when "True"  => null;
+   end case;
+
+   Object_Dir := "";
+   case Part is
+      when "driver" | "lib32" | "gnatcov32" | "compiler" => Object_Dir := "obj32";
+      when "gnatcov64"                                   => Object_Dir := "obj64";
+
+      --  gnatcov64 uses the real instrumenter.adb while lib64 uses the stub
+      --  one, so they cannot use the same object directory.
+
+      when "lib64"               => Object_Dir := "objlib64";
+   end case;
+   for Object_Dir use Object_Dir & "/" & Build_Mode;
+
+   for Languages use ("Ada", "C", "C++", "Templates");
+
+end Gnatcov;
+

@@ -37,7 +37,7 @@ stdenv.mkDerivation rec {
     hash = "sha256-wDQPkjTKk5HZEPs++PEBpzggoxLkeQaQefdN4wouZm4=";
   };
 
-  hardeningDisable = [ "format" "pie" "fortify3" ];
+  hardeningDisable = [ "format" "fortify3" ];
 
   configurePhase = ''
     runHook preConfigure

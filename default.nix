@@ -17,6 +17,7 @@ rec {
    polyorb = callPackage ./polyorb {};
    gnat_util = callPackage ./gnat_util {};
    xdiff = callPackage ./xdiff {};
+   ada-toml = callPackage ./ada-toml {};
 
    # Nixified version of Alire Index
    alire-index = callPackage ./alire-index {};
@@ -34,6 +35,7 @@ rec {
    langkit-lktlang = callPackage ./langkit/lktlang.nix { inherit langkit langkit-support adasat; };
    libadalang = callPackage ./libadalang { inherit langkit langkit-lktlang langkit-support; };
    libadalang-python = callPackage ./libadalang/python.nix { inherit libadalang; };
+   stable-sloc = callPackage ./stable-sloc { inherit ada-toml; };
 
    ada-spawn = callPackage ./ada-spawn { inherit gtkada; };
    ada-spawn-glib = ada-spawn.override { glibSupport = true; };
@@ -45,7 +47,7 @@ rec {
    wayland-ada = callPackage ./wayland-ada { inherit wayland-ada-scanner alire-index; };
 
    # Tier C
-   gnatcoverage = callPackage ./gnatcoverage { inherit gnat_util libadalang; };
+   gnatcoverage = callPackage ./gnatcoverage { inherit gnat_util libadalang templates-parser stable-sloc; };
    gnatformat = callPackage ./gnatformat { inherit prettier-ada libadalang vss-extra; };
    libadalang-tools = callPackage ./libadalang-tools { inherit libadalang templates-parser vss-text; };
    lal-refactor = callPackage ./lal-refactor { inherit libadalang-tools vss-extra; };
