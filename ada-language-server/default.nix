@@ -6,28 +6,30 @@
 , libadalang
 , libadalang-python
 , libadalang-tools
-, vss
+, vss-text
 , libgnatdoc
-, libgpr2
 , ada-spawn
 , ada-spawn-glib
 , lal-refactor
 , ada-libfswatch
 , gnatformat
+, xdiff
+, gnatPackages
 , glibSupport ? false
 }:
 
+with gnatPackages;
 let
    inherit (lib) optionalString optional;
 in
 stdenv.mkDerivation rec {
   pname = "ada-language-server" + optionalString glibSupport "-glib";
-  version = "26.0.20412191";
+  version = "2026.0.20260105";
   
   src = fetchGit {
     url = "https://github.com/AdaCore/ada_language_server.git";
     ref = "master";
-    rev = "cd011faf96e1a7b84148ef65a0eeeb14c25a7c54";
+    rev = "f235f86da547e8170789f36d22d78c9379096a19";
   };
 
   nativeBuildInputs = [
@@ -38,12 +40,13 @@ stdenv.mkDerivation rec {
   buildInputs = [
     libadalang
     libadalang-tools
-    vss
+    vss-text
     libgnatdoc
-    libgpr2
+    gpr2
     lal-refactor
     ada-libfswatch
     gnatformat
+    xdiff
   ]
   ++ optional glibSupport ada-spawn-glib
   ++ optional (!glibSupport) ada-spawn;

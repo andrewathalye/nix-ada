@@ -1,0 +1,13 @@
+diff --git a/src/lal_refactor-extract_variable.adb b/src/lal_refactor-extract_variable.adb.new
+index 2a3c256..49533d0 100644
+--- a/src/lal_refactor-extract_variable.adb
++++ b/src/lal_refactor-extract_variable.adb.new
+@@ -77,7 +77,7 @@ package body LAL_Refactor.Extract_Variable is
+ 
+          function Get_Priority (Node : Ada_Node) return Natural is
+          begin
+-            case Node.As_Bin_Op.F_Op is
++            case Ada_Op'(Node.As_Bin_Op.F_Op) is
+                when Ada_Op_In | Ada_Op_Not_In =>
+                   return 7;
+ 

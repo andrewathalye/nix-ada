@@ -1,23 +1,11 @@
 { lib
-, buildPythonPackage
 , fetchzip
 
 # python deps
-, colorama
-, pyyaml
-, python-dateutil
-, requests
-, requests_toolbelt
-, tqdm
-, stevedore
-, setuptools
-, psutil
-, pytest
-, coverage
-, mock
-, httpretty
+, python3Packages
 }:
 
+with python3Packages;
 buildPythonPackage rec {
   pname = "e3-core";
   version = "22.3.1";
@@ -27,7 +15,9 @@ buildPythonPackage rec {
     sha256 = "4StHOJldfeqApdF6D14Euzg9HvZ2e7G4/OQ0UrEbEIw=";
   };
 
+  pyproject = true;
+  build-system = [ setuptools ];
   patches = [ ./remove-ld.patch ];
 
-  propagatedBuildInputs = [ colorama pyyaml python-dateutil requests requests_toolbelt tqdm stevedore setuptools psutil pytest coverage mock httpretty ];
+  propagatedBuildInputs = [ colorama pyyaml python-dateutil requests requests-toolbelt tqdm stevedore setuptools psutil pytest coverage mock httpretty ];
 }

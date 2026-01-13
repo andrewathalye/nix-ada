@@ -2,17 +2,19 @@
 , fetchzip
 , gnat
 , gprbuild
-, gnatcoll-core
+, gnatPackages
 , fswatch
 }:
 
+with gnatPackages;
 stdenv.mkDerivation {
   pname = "ada-libfswatch";
-  version = "24.1-20220203";
+  version = "26.1-20240709";
   
-  src = fetchzip {
-    url = "https://github.com/AdaCore/ada_libfswatch/archive/00fb794cd61f9f86e00151e8380886d361dba102.zip";
-    sha256 = "s2Lzmf7/Iz8nzhTfZUhx/TH8D667NSCSnC2ePdIPVn0=";
+  src = fetchGit {
+    url = "https://github.com/AdaCore/ada_libfswatch.git";
+    ref = "26.1";
+    rev = "838480d8fca344d9f8a78341113ceb4ed5cf2222";
   };
   
   nativeBuildInputs = [

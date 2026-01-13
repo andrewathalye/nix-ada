@@ -3,7 +3,7 @@
 , gnat
 , gprbuild
 , ada-markdown
-, vss
+, vss-extra
 , libgnatdoc
 }:
 

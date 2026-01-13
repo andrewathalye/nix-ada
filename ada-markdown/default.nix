@@ -2,7 +2,7 @@
 , fetchgit
 , gnat
 , gprbuild
-, vss
+, vss-extra
 }:
 
 stdenv.mkDerivation rec {
@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
-    vss
+    vss-extra
   ];
 
   dontConfigure = true;

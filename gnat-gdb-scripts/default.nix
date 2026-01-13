@@ -1,8 +1,9 @@
 { lib
-, buildPythonPackage
 , fetchzip
+, python3Packages
 }:
 
+with python3Packages;
 buildPythonPackage rec {
   pname = "gnat-gdb-scripts";
   version = "20221017-git";
@@ -12,5 +13,7 @@ buildPythonPackage rec {
     sha256 = "G49givvBAXvk2hepMxaCO2dpx/e6CC5ln7bfERKFOZI=";
   };
 
+  pyproject = true;
+  build-system = [ setuptools ];
   doCheck = false;
 }

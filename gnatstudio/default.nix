@@ -6,48 +6,40 @@
 , gnat
 , gprbuild
 , pkg-config
-, gnatcoll-db2ada
-, wrapGAppsHook
+, wrapGAppsHook3
 
 # Python
-, pygobject3
-, pycairo
-, cairo
 , python3
-, jedi
-, pyyaml
-, pycodestyle
+, python3Packages
 , libadalang-python
 
 # Deps
-, xmlada
-, gnatcoll-core
+, gnatPackages
 , gtkada
-, gnatcoll-python3
 , libadalang
 , libadalang-tools
-, vss
+, vss-extra
 , ada-language-server
 , ada-language-server-glib
 , ada-spawn-glib
-, gnatcoll-xref
-, gnatcoll-sqlite
 , hicolor-icon-theme
 , gobject-introspection
 , gdb
 }:
 
+with python3Packages;
+with gnatPackages;
 let
-  ourPython = (python3.withPackages (ps: with ps; [ pycairo pygobject3 libadalang-python jedi pyyaml pycodestyle ]));
+  ourPython = (python3.withPackages (ps: with ps; [ pycairo pygobject3 libadalang-python jedi pyyaml pycodestyle distutils ]));
 in
 stdenv.mkDerivation rec {
   pname = "gnatstudio";
-  version = "24.2-20240618-git";
+  version = "20260109-git";
   
   src = fetchGit {
     url = "https://github.com/AdaCore/gnatstudio.git";
     ref = "master";
-    rev = "0f561c6c66b00a723f331ca84db18a5ef56f33e8";
+    rev = "1c2f3eab14871884fa532651345ae5546192ddd0";
   };
 
   gnatswitches_file = fetchurl {
@@ -56,11 +48,6 @@ stdenv.mkDerivation rec {
   };
 
   patches = [
-    ./dap-clients.patch
-    ./codepeer-bridge-commands.patch
-    ./parallel-cli.patch
-    ./collections-abc.patch
-    ./lal-highlighters.adb.patch
   ];
 
   nativeBuildInputs = [
@@ -68,7 +55,7 @@ stdenv.mkDerivation rec {
     gnatcoll-db2ada
     pkg-config
     ourPython
-    wrapGAppsHook
+    wrapGAppsHook3
   ];
 
   buildInputs = [
@@ -79,7 +66,7 @@ stdenv.mkDerivation rec {
     gnatcoll-core
     gnatcoll-python3
     libadalang
-    vss
+    vss-extra
     ada-language-server-glib
     gnatcoll-sqlite
     gnatcoll-xref

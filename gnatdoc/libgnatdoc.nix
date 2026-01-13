@@ -4,7 +4,7 @@
 , gprbuild
 , ada-markdown
 , libadalang
-, vss
+, vss-extra
 }:
 
 let
@@ -24,7 +24,7 @@ stdenv.mkDerivation rec {
   propagatedBuildInputs = [
     ada-markdown
     libadalang
-    vss
+    vss-extra
   ];
 
   dontConfigure = true;

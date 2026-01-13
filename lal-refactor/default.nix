@@ -3,18 +3,20 @@
 , gnat
 , gprbuild
 , libadalang-tools
-, vss
+, vss-extra
 }:
 
 stdenv.mkDerivation rec {
   pname = "lal-refactor";
-  version = "25.0.0";
+  version = "26.0.0-20260105";
   
   src = fetchGit {
     url = "https://github.com/AdaCore/lal-refactor.git";
     ref = "edge";
-    rev = "635edce9844e6091f359d63a0194efe8530c5855";
+    rev = "2e1a0b61fc228efa3e2c6aa9eb3a0388d372361c";
   };
+
+  patches = [ ./extract_variable.patch ];
 
   nativeBuildInputs = [
     gprbuild
@@ -23,7 +25,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     libadalang-tools
-    vss
+    vss-extra
   ];
 
   configurePhase = ''

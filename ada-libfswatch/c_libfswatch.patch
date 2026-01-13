@@ -10,7 +10,7 @@ index a12b28f..548d325 100644
     type OS_Type is ("unix", "Windows_NT");
     OS : OS_Type := External ("OS", "unix");
  
-    for Languages use ("C", "C++");
+    for Languages use ("C");
 -   for Source_Dirs use (libfswatch_prefix & "/include/libfswatch/c");
     for Externally_Built use "true";
     for Library_Name use "fswatch";

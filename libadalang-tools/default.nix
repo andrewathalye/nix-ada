@@ -5,17 +5,17 @@
 , pkg-config
 , libadalang
 , templates-parser
-, vss
+, vss-text
 }:
 
 stdenv.mkDerivation rec {
   pname = "libadalang-tools";
-  version = "25.0.0-20250114";
+  version = "26.0.0-20250902";
   
   src = fetchGit {
     url = "https://github.com/AdaCore/libadalang-tools.git";
-    ref = "master";
-    rev = "1dcb3f7a34b11cc11bf3f7de64d482daef731dae";
+    ref = "v26.0.0";
+    rev = "8a506bb4f65ec93da749364a767237feca1c7eba";
   };
   
   nativeBuildInputs = [
@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
-    vss
+    vss-text
   ];
 
   propagatedBuildInputs = [

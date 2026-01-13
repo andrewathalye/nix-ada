@@ -3,22 +3,27 @@
 , gnat
 , gprbuild
 , pkg-config
+, vss-text
 }:
 
 stdenv.mkDerivation rec {
-  pname = "vss-text";
-  version = "26.0.0-20251218";
+  pname = "vss-extra";
+  version = "26.0.0-20260109";
   
   src = fetchGit {
-    url = "https://github.com/AdaCore/vss-text.git";
+    url = "https://github.com/AdaCore/vss-extra.git";
     ref = "master";
-    rev = "652cc8bb555c8f9e1636e32006f827a01e2a9ff1";
+    rev = "f52c33dcc503029af4dbe98f24b4fc5800570a7d";
   };
   
   nativeBuildInputs = [
     gprbuild
     gnat
     pkg-config
+  ];
+
+  propagatedBuildInputs = [
+    vss-text
   ];
 
   buildPhase = ''

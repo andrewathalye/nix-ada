@@ -8,12 +8,12 @@
 
 stdenv.mkDerivation rec {
   pname = "gtkada";
-  version = "24.2";
+  version = "26.0.0-20251211";
   
   src = fetchGit {
     url = "https://github.com/AdaCore/gtkada.git";
-    ref = version;
-    rev = "96b4eceb0c088b07a91387da704547818d9192f0";
+    ref = "master";
+    rev = "2ace55222984aca383e68f13567988214dd43d4b";
   };
 
   nativeBuildInputs = [

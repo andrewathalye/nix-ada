@@ -6,10 +6,11 @@
 , gprbuild
 
 # Dependencies
-, gnatcoll-core
-, vss
+, gnatPackages
+, vss-text
 }:
 
+with gnatPackages;
 stdenv.mkDerivation {
   pname = "prettier-ada";
   version = "25.0.0";
@@ -27,7 +28,7 @@ stdenv.mkDerivation {
 
   propagatedBuildInputs = [
     gnatcoll-core
-    vss
+    vss-text
   ];
 
   dontConfigure = true;

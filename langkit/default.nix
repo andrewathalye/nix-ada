@@ -1,27 +1,8 @@
 { lib
-, buildPythonPackage
 , fetchgit
 
 # Python deps
-, mako
-, pygments
-, autopep8
-, coverage
-, docutils
-, flake8
-, funcy
-, importlib-metadata
-, mccabe
-, mypy
-, pexpect
-, ptyprocess
-, pycodestyle
-, pyflakes
-, pytest
-, railroad-diagrams
-, sphinx-rtd-theme
-, types-docutils
-, yapf
+, python3Packages
 
 # Local python deps
 , types-gdb
@@ -31,17 +12,19 @@
 , prettier-ada
 }:
 
+with python3Packages;
 buildPythonPackage rec {
   pname = "langkit";
-  version = "25.0.0-20250115";
+  version = "26.0.0-20260109";
   
   src = fetchGit {
     url = "https://github.com/AdaCore/langkit.git";
     ref = "master";
-    rev = "220bd77c0145db54d86ddfefcd66bffabbf1a925";
+    rev = "bac25208b802112eb13f09967ddf4ee0e432aab6";
   };
 
-  patches = [ ./diagnostics.py.patch ];
+  pyproject = true;
+  build-system = [ setuptools ];
 
   pythonDeps = [ mako pygments autopep8 coverage docutils flake8 funcy importlib-metadata mccabe mypy pexpect ptyprocess pycodestyle pyflakes pytest railroad-diagrams sphinx-rtd-theme types-docutils yapf ];
 
