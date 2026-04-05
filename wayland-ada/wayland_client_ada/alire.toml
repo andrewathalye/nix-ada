@@ -15,4 +15,4 @@ type = "pre-build"
 command = ["wayland_ada_scanner", "protocol/wayland.xml", "src/protocols"]
 
 [[depends-on]]
-libwayland = "^1.18"
+libwayland = "*"
